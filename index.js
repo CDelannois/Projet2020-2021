@@ -63,7 +63,7 @@ app.get("/jeux/:id", async (req, res) => {
 app.post('/jeux', async (req, res) => {
     const data = req.body;
     try {
-        const add = await query('INSERT INTO `jeux_de_societe`.`jeux` (id_jeux, titre, joueurs_min, joueurs_max, duree, age_recommande, mecanisme, mecanisme2, date_parution, editeur, commentaire, appartient) VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)', [data.titre, data.joueurs_min,data.joueurs_max, data.duree, data.age_recommande, data.mecanisme, data.mecanisme2, data.date_parution, data.editeur, data.commentaire, data.appartient]);
+        const add = await query('INSERT INTO `jeux_de_societe`.`jeux` (id_jeux, titre, joueurs_min, joueurs_max, duree, age_recommande, mecanisme, mecanisme2, date_parution, editeur, commentaire, appartient) VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)', [data.titre, data.joueurs_min, data.joueurs_max, data.duree, data.age_recommande, data.mecanisme, data.mecanisme2, data.date_parution, data.editeur, data.commentaire, data.appartient]);
         return res.status(200).json({
             ok: 'Félicitations pour le nouveau jeu!'
         });
@@ -74,9 +74,30 @@ app.post('/jeux', async (req, res) => {
     }
 });
 
+//Suppression d'un jeu
+app.delete("/jeux/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const del = await query('DELETE FROM jeux_de_societe where id_jeux =?', [id]);
+        if (del.affectedRows == 0) {
+            return res.status(404).json({
+                error: "Ce jeu n'existe pas."
+            });
+        } else {
+            return res.status(200).json({
+                ok: "Le jeu a bien été supprimé."
+            })
+        }
+    } catch (e) {
+        return res.status(400).json({
+            error: "Prout prout que je t'aime!."
+        })
+    }
+});
+
 
 
 //Démarre le serveur + indique le port spécifié.
 app.listen(port, () => {
-console.log(`Server started :${port}`);
+    console.log(`Server started :${port}`);
 });
