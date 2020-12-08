@@ -78,7 +78,7 @@ app.post('/jeux', async (req, res) => {
 app.delete("/jeux/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const del = await query('DELETE FROM jeux_de_societe where id_jeux =?', [id]);
+        const del = await query('DELETE FROM jeux where id_jeux =?', [id]);
         if (del.affectedRows == 0) {
             return res.status(404).json({
                 error: "Ce jeu n'existe pas."
@@ -90,7 +90,7 @@ app.delete("/jeux/:id", async (req, res) => {
         }
     } catch (e) {
         return res.status(400).json({
-            error: "Prout prout que je t'aime!."
+            error: e
         })
     }
 });
