@@ -1,14 +1,14 @@
+//_________________________________________________________________________________MEMBRES_________________________________________________________________________________________
 //Déclaration des variables
-const list = {};
-list.membreToRemove = null;
-list.init = async () => {
-    const membre = await list.getMembre();
-    list.importMembreInTable(membre);
+const listMembre = {};
+listMembre.membreToRemove = null;
+listMembre.init = async () => {
+    const membre = await listMembre.getMembre();
+    listMembre.importMembreInTable(membre);
 }
 
 //Récupération des membres
-list.getMembre = () => {
-
+listMembre.getMembre = () => {
     return jQuery
         .ajax({
             url: 'http://localhost:3000/membre',
@@ -21,15 +21,15 @@ list.getMembre = () => {
 };
 
 //Confirmation de la suppression
-list.confirmRemove = (membreId) => {
-    list.membreToRemove = membreId;
+listMembre.confirmRemove = (membreId) => {
+    listMembre.membreToRemove = membreId;
     console.log('ID ', membreId);
     jQuery('#remove-membre-modal').modal('toggle');
 }
 
 //Suppression d'un membre
-list.remove = async () => {
-    const membreId = list.membreToRemove;
+listMembre.remove = async () => {
+    const membreId = listMembre.membreToRemove;
     try {
         await jQuery
             .ajax({
@@ -39,42 +39,91 @@ list.remove = async () => {
         jQuery(`[data-id="${membreId}"]`).fadeOut('slow');
     } catch (error) {
         console.error(error);
-        alert('Une erreur est survenue. Impossible de supprimer le membre.');// Récupérer le code SQL et faire un message qui précise qu'on ne peut pas supprimer un membre qui possède encore des jeux.
+        alert('Une erreur est survenue. Impossible de supprimer le membre.'); // Récupérer le code SQL et faire un message qui précise qu'on ne peut pas supprimer un membre qui possède encore des jeux.
     } finally {
         jQuery("#remove-membre-modal").modal('hide');
     }
-
 }
 
 //Liste des membres
-list.importMembreInTable = (membres) => {
+listMembre.importMembreInTable = (membres) => {
     const tbody = jQuery("#list-membres tbody");
     membres.forEach((membre) => {
         tbody.append(`
             <tr data-id="${membre.id_membre}" >
-                <td>${membre.nom}</td>`+//Ajouter un lien qui permet d'afficher directement les jeux de ce membre.
-                `<td>${membre.prenom}</td>
+                <td>${membre.nom}</td>
+                <td>${membre.prenom}</td>
                 <td>${membre.telephone}</td>
                 <td>${membre.email}</td>
                 <td>${membre.adresse}</td>
-                <td>${membre.date_naissance}</td>`+//Problème avec l'affichage de la date.
+                <td>${membre.date_naissance}</td>` + //Problème avec l'affichage de la date.
+                /*`<td>
+                    <button onclick="listMembreJeux.init(${membre.id_membre})" class ="btn btn-info">Voir les jeux
+                </td>*/
                 `<td>
-                    <button onclick="list.confirmRemove(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
+                    <button onclick="listMembre.confirmRemove(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
                 </td>
             </tr>`);
     });
     console.log('import membre', membres)
 };
 
-list.init();
+listMembre.init();
 
-//Liste des Jeux !PAS TERMINE, il faut ajouter le reste (adapter lignes 1 à 47 + 69)
-list.importJeuxInTable = (jeux) => {
+//_________________________________________________________________________________JEUX_________________________________________________________________________________________
+const listJeux = {};
+listJeux.jeuxToRemove = null;
+listJeux.init = async () => {
+    const jeu = await listJeux.getJeux();
+    listJeux.importJeuxInTable(jeu);
+}
+
+//Récupération des jeux
+listJeux.getJeux = () => {
+    return jQuery
+        .ajax({
+            url: 'http://localhost:3000/jeux',
+            method: 'GET'
+        })
+        .catch((error) => {
+            console.warn(error);
+            return [];
+        })
+};
+
+//Confirmation de la suppression
+listJeux.confirmRemove = (jeuId) => {
+    listJeux.jeuxToRemove = jeuId;
+    console.log('ID ', jeuId);
+    jQuery('#remove-jeu-modal').modal('toggle');
+}
+
+//Suppression d'un jeu
+listJeux.remove = async () => {
+    const jeuId = listJeux.jeuxToRemove;
+    try {
+        await jQuery
+            .ajax({
+                url: `http://localhost:3000/jeux/${jeuId}`,
+                method: "DELETE",
+            });
+        jQuery(`[data-id="${jeuId}"]`).fadeOut('slow');
+    } catch (error) {
+        console.error(error);
+        alert('Une erreur est survenue. Impossible de supprimer le jeu.');
+    } finally {
+        jQuery("#remove-jeu-modal").modal('hide');
+    }
+}
+
+
+//Liste des jeux
+listJeux.importJeuxInTable = (jeux) => {
     const tbody = jQuery("#list-jeux tbody");
     jeux.forEach((jeu) => {
         tbody.append(`
-            <tr data-id="${jeu.id_jeu}" >
-                <td>${jeu.titre}</td>`+//Ajouter un lien qui permet d'afficher directement les détail de ce jeu.
+                <tr data-id="${jeu.id_jeux}" >
+                <td>${jeu.titre}</td>` + //Ajouter un lien qui permet d'afficher directement les détail de ce jeu.
                 `<td>${jeu.joueurs_min}</td>
                 <td>${jeu.joueurs_max}</td>
                 <td>${jeu.duree}</td>
@@ -83,9 +132,11 @@ list.importJeuxInTable = (jeux) => {
                 <td>${jeu.mecanisme2}</td>
                 <td>${jeu.editeur}</td>
                 <td>
-                    <button onclick="list.confirmRemove(${jeu.id_jeu})" class ="btn btn-danger remove-line">Supprimer
+                    <button onclick="listJeux.confirmRemove(${jeu.id_jeux})" class ="btn btn-danger remove-line">Supprimer
                 </td>
             </tr>`);
     });
     console.log('import jeux', jeux)
 };
+
+listJeux.init();

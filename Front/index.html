@@ -147,6 +147,7 @@
     </div>
   </div>
 
+  <!--Modal de suppression des membres-->
   <div class="modal fade" id="remove-membre-modal" tabindex="-1" aria-labelledby="remove-membre-modal" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -161,12 +162,13 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-danger" onclick="list.remove()">Supprimer</button>
+          <button type="button" class="btn btn-danger" onclick="listMembre.remove()">Supprimer</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!--Affichage des jeux-->
   <div class="row" id="jeux_table">
     <div class="col-12">
       <table id="list-jeux" class="table">
@@ -188,8 +190,9 @@
       </table>
     </div>
   </div>
-
-  <div class="modal fade" id="remove-jeux-modal" tabindex="-1" aria-labelledby="remove-jeux-modal" aria-hidden="true">
+  
+  <!--Modal de suppression des jeux-->
+  <div class="modal fade" id="remove-jeu-modal" tabindex="-1" aria-labelledby="remove-jeux-modal" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -203,7 +206,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-danger" onclick="list.remove()">Supprimer</button>
+          <button type="button" class="btn btn-danger" onclick="listJeux.remove()">Supprimer</button>
         </div>
       </div>
     </div>
