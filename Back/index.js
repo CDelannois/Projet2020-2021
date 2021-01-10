@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 //Parse les requêtes de body entrantes dans un middleware avant les handlers. Utiliser les propriétés de req.body.
-//const cors = require('cors');
+const cors = require('cors');
 //Cross-origin resource sharing (CORS) permet d'autoriser les ressources sur une page web provenant de requêtes depuis un autre domaine hors du domaine d'origine.
 const db = require("./db_jeux");
 //Connection à la bdd
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
     extended: true //This object will contain key-value pairs, where the value can be a string or array (when extended is false), or any type (when extended is true). Certaines données seront au format date.
 }));
 
-//app.use(cors());
+app.use(cors());
 
 //Déclaration d'une promesse pour la réalisation des requêtes SQL
 function query(request, data) {
