@@ -1,10 +1,11 @@
 //_________________________________________________________________________________MEMBRES_________________________________________________________________________________________
 //Déclaration des variables
 const listMembre = {};
+listMembre.membre = [];
 listMembre.membreToRemove = null;
 listMembre.init = async () => {
-    const membre = await listMembre.getMembre();
-    listMembre.importMembreInTable(membre);
+    listMembre.membre = await listMembre.getMembre();
+    listMembre.importMembreInTable(listMembre.membre, true);
 }
 
 //Récupération des membres
@@ -46,27 +47,37 @@ listMembre.remove = async () => {
 }
 
 //Liste des membres
-listMembre.importMembreInTable = (membres) => {
+listMembre.importMembreInTable = (membres, clear) => {
     const tbody = jQuery("#list-membres tbody");
-    membres.forEach((membre) => {
-        tbody.append(`
+
+    if (clear === true) {
+        tbody.empty();
+    }
+
+        tbody.append(
+            membres.map((membre)=>{
+            const date=new Date(membre.date_naissance);
+            return `
             <tr data-id="${membre.id_membre}" >
                 <td>${membre.nom}</td>
                 <td>${membre.prenom}</td>
                 <td>${membre.telephone}</td>
                 <td>${membre.email}</td>
                 <td>${membre.adresse}</td>
-                <td>${membre.date_naissance}</td>` + //Problème avec l'affichage de la date.
-                /*`<td>
-                    <button onclick="listMembreJeux.init(${membre.id_membre})" class ="btn btn-info">Voir les jeux
-                </td>*/
-                `<td>
+                <td>${date.toLocaleDateString()}</td>` +
+            /*`<td>
+                <button onclick="listMembreJeux.init(${membre.id_membre})" class ="btn btn-info">Voir les jeux
+            </td>*/
+            `<td>
                     <button onclick="listMembre.confirmRemove(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
                 </td>
-            </tr>`);
-    });
-    console.log('import membre', membres)
-};
+                <td>
+                    <button onclick="edition.showForm(${membre.id_membre})" class ="btn btn-primary">Modifier
+                </td>
+            </tr>`;
+            })
+        );
+    }
 
 listMembre.init();
 
@@ -124,7 +135,7 @@ listJeux.importJeuxInTable = (jeux) => {
         tbody.append(`
                 <tr data-id="${jeu.id_jeux}" >
                 <td>${jeu.titre}</td>` + //Ajouter un lien qui permet d'afficher directement les détail de ce jeu.
-                `<td>${jeu.joueurs_min}</td>
+            `<td>${jeu.joueurs_min}</td>
                 <td>${jeu.joueurs_max}</td>
                 <td>${jeu.duree}</td>
                 <td>${jeu.age_recommande}</td>

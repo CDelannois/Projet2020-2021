@@ -16,7 +16,7 @@
     <div class="text-right p-4">
       <button class="btn btn-success" id="button-add-membre" onclick="edition.showForm()">Ajouter un membre</button><!--Le bouton ne doit apparaitre que quand on affiche les membres-->
       <button class="btn btn-success" id="button-add-jeu" onclick="edition.showForm()">Ajouter un jeu</button><!--Le bouton ne doit apparaitre que quand on affiche un membre en particulier-->
-      <button class="btn btn-danger" id="button-cancel-edit" onclick="edition.cleanForm()">Annuler</button>
+      <button class="btn btn-danger" id="button-cancel-edit" onclick="edition.hideForm()">Annuler</button>
       <button class="btn btn-info" id="button-display-jeux" onclick="display.showJeux()">Jeux</button><!--Le bouton ne doit apparaitre que quand on affiche les membres-->
       <button class="btn btn-info" id="button-display-membre" onclick="display.showMembre()">Membres</button><!--Le bouton ne doit apparaitre que quand on affiche les jeux-->
     </div>
@@ -33,6 +33,7 @@
       </div>
       <div class="card-body">
         <form>
+          <input type="hidden" name="id" id="id_membre">
           <div class="form-group">
             <label for="nom">Nom</label>
             <input type="text" class="form-control" id="nom" placeholder="Nom du nouveau membre">
