@@ -33,30 +33,30 @@
       </div>
       <div class="card-body">
         <form>
-          <input type="hidden" name="id" id="id_membre">
+          <input type="hidden" name="id" id="id_membre" required>
           <div class="form-group">
             <label for="nom">Nom</label>
-            <input type="text" class="form-control" id="nom" placeholder="Nom du nouveau membre">
+            <input type="text" class="form-control" id="nom" placeholder="Nom du nouveau membre" required>
           </div>
           <div class="form-group">
             <label for="prenom">Prénom</label>
-            <input type="text" class="form-control" id="prenom" placeholder="Prénom du nouveau membre">
+            <input type="text" class="form-control" id="prenom" placeholder="Prénom du nouveau membre" required>
           </div>
           <div class="form-group">
             <label for="telephone">Numéro de téléphone</label>
-            <input type="text" class="form-control" id="telephone" placeholder="Numéro de téléphone du nouveau membre">
+            <input type="text" class="form-control" id="telephone" placeholder="Numéro de téléphone du nouveau membre" required>
           </div>
           <div class="form-group">
             <label for="email">Adresse mail</label>
-            <input type="text" class="form-control" id="email" placeholder="Adresse mail du nouveau membre">
+            <input type="email" class="form-control" id="email" placeholder="Adresse mail du nouveau membre" required>
           </div>
           <div class="form-group">
             <label for="adresse">Adresse (numéro, rue et ville)</label>
-            <input type="text" class="form-control" id="adresse" placeholder="Numéro, rue et ville">
+            <input type="text" class="form-control" id="adresse" placeholder="Numéro, rue et ville" required>
           </div>
           <div class="form-group">
             <label for="date_naissance">Date de naissance</label>
-            <input type="date" class="form-control" id="date_naissance">
+            <input type="date" class="form-control" id="date_naissance" required>
           </div>
           <button type="submit" onclick="edition.saveMembre(event)" class="btn btn-primary">Envoyer</button>
         </form>
@@ -73,18 +73,18 @@
           Ajouter un jeu
         </div>
         <div class="card-body">
-          <form>
+          <form id="membreForm">
             <div class="form-group">
               <label for="titre">Titre</label>
               <input type="text" class="form-control" id="titre" placeholder="Titre du nouveau jeu">
             </div>
             <div class="form-group">
               <label for="joueurs_min">Nombre minimum de joueurs</label>
-              <input type="text" class="form-control" id="joueurs_min">
+              <input type="text" class="form-control" id="joueurs_min" required>
             </div>
             <div class="form-group">
                 <label for="joueurs_max">Nombre maximum de joueurs</label>
-                <input type="text" class="form-control" id="joueurs_max">
+                <input type="text" class="form-control" id="joueurs_max" required>
               </div>
               <div class="form-group">
                 <label for="duree">Durée moyenne du jeu en minutes</label>

@@ -60,9 +60,10 @@ edition.saveMembre = async (event) => {
     const nom = jQuery('#nom').val();
     const prenom = jQuery('#prenom').val();
     const telephone = jQuery('#telephone').val();
-    const email = jQuery('#email').val(); //Il faudra ajouter une vérification pour que l'adresse respecte le format *@*.*
+    const email = jQuery('#email').val(); //Il faudra ajouter une vérification pour que l'adresse respecte le format *@*.* voir https://www.w3resource.com/javascript/form/email-validation.php
     const adresse = jQuery('#adresse').val();
     const date_naissance = jQuery('#date_naissance').val();
+    
 
     let url = 'http://localhost:3000/membre';
 

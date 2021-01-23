@@ -182,17 +182,38 @@ app.get("/membre/:id", async (req, res) => {
 
 //Ajout d'un membre
 app.post("/membre", async (req, res) => {
-    const data = req.body;
-    try {
-        const add = await query("INSERT INTO membre (id_membre, nom, prenom, telephone, email, adresse, date_naissance) VALUES (NULL,?,?,?,?,?,?)", [data.nom, data.prenom, data.telephone, data.email, data.adresse, data.date_naissance]);
-        return res.status(200).json({
-            ok: "Nouveau membre inscrit!"
+    const membre = req.body;
+
+    db.query("INSERT INTO membre (id_membre, nom, prenom, telephone, email, adresse, date_naissance) VALUES (NULL,?,?,?,?,?,?)", [membre.nom, membre.prenom, membre.telephone, membre.email, membre.adresse, membre.date_naissance], (error, result) => {
+        if (error) {
+            return res
+                .status(400)
+                .json({
+                    error: "Impossible d'ajouter le membre."
+                })
+        }
+
+        const idMembre = result.insertId;
+
+        db.query("select * from membre where id_membre = ?", [idMembre], function (error, result) {
+            if (error) {
+                return res
+                    .status(400)
+                    .json({
+                        error: "Impossible d'afficher le nouveau membre."
+                    });
+            }
+            const membre = result.shift();
+
+            if (membre) {
+                return res.json(membre);
+            }
+
+            res.status(404).json({
+                error: "Impossible d'afficher le membre!"
+            });
         });
-    } catch (e) {
-        return res.status(400).json({
-            error: "Une erreur est survenue! " + e
-        });
-    }
+    })
 });
 
 //Editer un membre
