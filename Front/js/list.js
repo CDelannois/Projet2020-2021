@@ -1,4 +1,4 @@
-//_________________________________________________________________________________MEMBRES_________________________________________________________________________________________
+//_________________________________________________________________________________MEMBRES______________________________________________________________________________________________
 //Déclaration des variables
 const listMembre = {};
 listMembre.membre = [];
@@ -64,15 +64,15 @@ listMembre.importMembreInTable = (membres, clear) => {
                 <td>${membre.telephone}</td>
                 <td>${membre.email}</td>
                 <td>${membre.adresse}</td>
-                <td>${date.toLocaleDateString()}</td>` +
-            /*`<td>
-                <button onclick="listMembreJeux.init(${membre.id_membre})" class ="btn btn-info">Voir les jeux
-            </td>*/
-            `<td>
-                    <button onclick="listMembre.confirmRemove(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
+                <td>${date.toLocaleDateString()}</td>
+                <td>
+                    <button onclick="listMembreJeux.init(${membre.id_membre})" class ="btn btn-info">Voir les jeux
                 </td>
                 <td>
                     <button onclick="edition.showForm(${membre.id_membre})" class ="btn btn-primary">Modifier
+                </td>
+                <td>
+                    <button onclick="listMembre.confirmRemove(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
                 </td>
             </tr>`;
             })
@@ -81,7 +81,7 @@ listMembre.importMembreInTable = (membres, clear) => {
 
 listMembre.init();
 
-//_________________________________________________________________________________JEUX_________________________________________________________________________________________
+//__________________________________________________________________________________JEUX________________________________________________________________________________________________
 const listJeux = {};
 listJeux.jeuxToRemove = null;
 listJeux.init = async () => {
@@ -151,3 +151,24 @@ listJeux.importJeuxInTable = (jeux) => {
 };
 
 listJeux.init();
+
+//_____________________________________________________________________________________JEUX_____________________________________________________________________________________________
+const listMembreJeux={};
+
+listJeux.init = async () => {
+    const jeu = await listJeux.getJeux();
+    listJeux.importJeuxInTable(jeu);
+}
+
+//Récupération des jeux liés aux membres
+listJeux.getJeux = () => {
+    return jQuery
+        .ajax({
+            url: 'http://localhost:3000/jeux',
+            method: 'GET'
+        })
+        .catch((error) => {
+            console.warn(error);
+            return [];
+        })
+};
