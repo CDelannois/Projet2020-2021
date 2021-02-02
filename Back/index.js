@@ -17,31 +17,11 @@ app.use(cors());
 //Controllers
 const membre= require('./controllers/membre');
 const jeux= require('./controllers/jeux');
+const membreJeux = require("./controllers/membreJeux");
 
 membre(app, queryPromise);
 jeux(app,queryPromise);
-
-//______________________________________________________________________________Partie jointure______________________________________________________________________________________________
-
-
-//Récupération des jeux d'un membre dont on spécifie l'ID
-app.get("/membre_jeux/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-        const membre_jeux = await queryPromise("SELECT * FROM membre JOIN jeux ON id_membre=appartient where id_membre=? ", [id]);
-        if (membre_jeux.lenght === 0) {
-            return res.status(404).json({
-                error: "Cette personne n'existe pas!"
-            });
-        } else {
-            res.json(membre_jeux)
-        }
-    } catch (e) {
-        return res.status(400).json({
-            error: "Une erreur est survenue. " + e
-        });
-    }
-});
+membreJeux(app,queryPromise);
 
 //______________________________________________________________________________Partie lancer l'app__________________________________________________________________________________________
 

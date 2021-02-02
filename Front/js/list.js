@@ -127,7 +127,6 @@ listJeux.remove = async () => {
     }
 }
 
-
 //Liste des jeux
 listJeux.importJeuxInTable = (jeux) => {
     const tbody = jQuery("#list-jeux tbody");
@@ -135,7 +134,7 @@ listJeux.importJeuxInTable = (jeux) => {
         tbody.append(`
                 <tr data-id="${jeu.id_jeux}" >
                 <td>${jeu.titre}</td>` + //Ajouter un lien qui permet d'afficher directement les détail de ce jeu.
-            `<td>${jeu.joueurs_min}</td>
+                `<td>${jeu.joueurs_min}</td>
                 <td>${jeu.joueurs_max}</td>
                 <td>${jeu.duree}</td>
                 <td>${jeu.age_recommande}</td>
@@ -147,20 +146,20 @@ listJeux.importJeuxInTable = (jeux) => {
                 </td>
             </tr>`);
     });
-    console.log('import jeux', jeux)
 };
 
 listJeux.init();
 
-//_____________________________________________________________________________________JEUX_____________________________________________________________________________________________
+//_____________________________________________________________________________________JEUX D'UN MEMBRE_________________________________________________________________________________
 const listMembreJeux={};
 
-listJeux.init = async () => {
-    const jeu = await listJeux.getJeux();
-    listJeux.importJeuxInTable(jeu);
+listMembreJeux.init = async (membreId) => {
+    const membreJeu = await listMembreJeux.getMembreJeux(membreId);
+    listMembreJeux.importMembreJeuxInTable(membreJeu);
+    console.log(membreJeu);
 }
 
-//Récupération des jeux liés aux membres
+//Récupération des jeux
 listJeux.getJeux = () => {
     return jQuery
         .ajax({
@@ -172,3 +171,40 @@ listJeux.getJeux = () => {
             return [];
         })
 };
+
+listJeux.init();
+//Récupération des jeux liés aux membres
+listMembreJeux.getMembreJeux = (membreId) => {
+    return jQuery
+        .ajax({
+            url: `http://localhost:3000/membreJeux/${membreId}`,
+            method: 'GET'
+        })
+        .catch((error) => {
+            console.warn(error);
+            return [];
+        })
+};
+
+//Liste des jeux
+listMembreJeux.importMembreJeuxInTable = (jeux) => {
+    const tbody = jQuery("#list-membre-jeux tbody");
+    jeux.forEach((membreJeu) => {
+        tbody.append(`
+                <tr data-id="${membreJeu.id_jeux}" >
+                <td>${membreJeu.titre}</td>` + //Ajouter un lien qui permet d'afficher directement les détail de ce jeu.
+                `<td>${membreJeu.joueurs_min}</td>
+                <td>${membreJeu.joueurs_max}</td>
+                <td>${membreJeu.duree}</td>
+                <td>${membreJeu.age_recommande}</td>
+                <td>${membreJeu.mecanisme}</td>
+                <td>${membreJeu.mecanisme2}</td>
+                <td>${membreJeu.editeur}</td>
+                <td>
+                    <button onclick="listJeux.confirmRemove(${membreJeu.id_jeux})" class ="btn btn-danger remove-line">Supprimer
+                </td>
+            </tr>`);
+    });
+};
+
+listMembreJeux.init();
