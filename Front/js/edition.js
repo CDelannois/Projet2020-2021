@@ -24,13 +24,14 @@ edition.populateMembre = (membreID) => {
     const membre = listMembre.membre.find(membre => membre.id_membre === membreID);
     //Si le membre existe
     if (membre) {
+        const date = membre.date_naissance.slice(0,10);
         jQuery('#id_membre').val(membre.id_membre);
         jQuery('#nom').val(membre.nom);
         jQuery('#prenom').val(membre.prenom);
         jQuery('#telephone').val(membre.telephone);
         jQuery('#email').val(membre.email);
         jQuery('#adresse').val(membre.adresse);
-        jQuery('#date_naissance').val(membre.date_naissance);
+        jQuery('#date_naissance').val(date);
     }
 }
 
@@ -63,7 +64,7 @@ edition.saveMembre = async (event) => {
     const email = jQuery('#email').val(); //Il faudra ajouter une vérification pour que l'adresse respecte le format *@*.* voir https://www.w3resource.com/javascript/form/email-validation.php
     const adresse = jQuery('#adresse').val();
     const date_naissance = jQuery('#date_naissance').val();
-    
+
 
     let url = 'http://localhost:3000/membre';
 

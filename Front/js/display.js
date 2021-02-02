@@ -9,6 +9,7 @@ edition.buttonAddMembre = jQuery('#button-add-membre');
 display.showJeux = () => {
     jQuery('#jeux_table').show();
     jQuery('#membre_table').hide();
+    jQuery('membre_jeux_table').hide();
     display.buttonDisplayJeux.hide();
     display.buttonDisplayMembre.show();
     edition.buttonAddMembre.hide();
@@ -18,7 +19,16 @@ display.showJeux = () => {
 display.showMembre = () => {
     jQuery('#jeux_table').hide();
     jQuery('#membre_table').show();
+    jQuery('membre_jeux_table').hide();
     display.buttonDisplayJeux.show();
     display.buttonDisplayMembre.hide();
     edition.buttonAddMembre.show();  
 };
+
+//Afficher les jeux d'un membre
+display.showMembreJeux = () => {
+    jQuery('#jeux_table').hide();
+    jQuery('#membre_table').hide();
+    display.buttonDisplayJeux.show();
+    display.buttonDisplayMembre.show();
+}
