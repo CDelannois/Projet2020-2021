@@ -1,7 +1,8 @@
+// Adapter les dates avec https://www.npmjs.com/package/moment
+
 //_________________________________________________________________________________MEMBRES______________________________________________________________________________________________
 //Déclaration des variables
 const listMembre = {};
-listMembre.membre = [];
 listMembre.membreToRemove = null;
 listMembre.init = async () => {
     listMembre.membre = await listMembre.getMembre();
@@ -54,9 +55,9 @@ listMembre.importMembreInTable = (membres, clear) => {
         tbody.empty();
     }
 
-        tbody.append(
-            membres.map((membre)=>{
-            const date=new Date(membre.date_naissance);
+    tbody.append(
+        membres.map((membre) => {
+            const date = new Date(membre.date_naissance);
             return `
             <tr data-id="${membre.id_membre}" >
                 <td>${membre.nom}</td>
@@ -66,7 +67,7 @@ listMembre.importMembreInTable = (membres, clear) => {
                 <td>${membre.adresse}</td>
                 <td>${date.toLocaleDateString()}</td>
                 <td>
-                    <button onclick="listMembreJeux.init(${membre.id_membre})" class ="btn btn-info">Voir les jeux
+                    <button onclick="listMembreJeux.showJeux(${membre.id_membre})" class ="btn btn-info">Voir les jeux
                 </td>
                 <td>
                     <button onclick="edition.showForm(${membre.id_membre})" class ="btn btn-primary">Modifier
@@ -75,9 +76,9 @@ listMembre.importMembreInTable = (membres, clear) => {
                     <button onclick="listMembre.confirmRemove(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
                 </td>
             </tr>`;
-            })
-        );
-    }
+        })
+    );
+}
 
 listMembre.init();
 
@@ -101,6 +102,11 @@ listJeux.getJeux = () => {
             return [];
         })
 };
+
+//Récupération d'un jeu pour afficher les détails
+listJeux.jeuDetail = () => {
+    console.log("Coucou!");
+}
 
 //Confirmation de la suppression
 listJeux.confirmRemove = (jeuId) => {
@@ -134,7 +140,7 @@ listJeux.importJeuxInTable = (jeux) => {
         tbody.append(`
                 <tr data-id="${jeu.id_jeux}" >
                 <td>${jeu.titre}</td>` + //Ajouter un lien qui permet d'afficher directement les détail de ce jeu.
-                `<td>${jeu.joueurs_min}</td>
+            `<td>${jeu.joueurs_min}</td>
                 <td>${jeu.joueurs_max}</td>
                 <td>${jeu.duree}</td>
                 <td>${jeu.age_recommande}</td>
@@ -144,6 +150,9 @@ listJeux.importJeuxInTable = (jeux) => {
                 <td>
                     <button onclick="listJeux.confirmRemove(${jeu.id_jeux})" class ="btn btn-danger remove-line">Supprimer
                 </td>
+                <td>
+                    <button onclick="listJeux.jeuDetail(${jeu.id_jeux})" class = "btn btn-info">Détails`+ //Ajouter l'action du bouton
+                `</td>
             </tr>`);
     });
 };
@@ -151,7 +160,7 @@ listJeux.importJeuxInTable = (jeux) => {
 listJeux.init();
 
 //_____________________________________________________________________________________JEUX D'UN MEMBRE_________________________________________________________________________________
-const listMembreJeux={};
+const listMembreJeux = {};
 
 listMembreJeux.init = async (membreId) => {
     const membreJeu = await listMembreJeux.getMembreJeux(membreId);
@@ -159,20 +168,6 @@ listMembreJeux.init = async (membreId) => {
     console.log(membreJeu);
 }
 
-//Récupération des jeux
-listJeux.getJeux = () => {
-    return jQuery
-        .ajax({
-            url: 'http://localhost:3000/jeux',
-            method: 'GET'
-        })
-        .catch((error) => {
-            console.warn(error);
-            return [];
-        })
-};
-
-listJeux.init();
 //Récupération des jeux liés aux membres
 listMembreJeux.getMembreJeux = (membreId) => {
     return jQuery
@@ -187,13 +182,13 @@ listMembreJeux.getMembreJeux = (membreId) => {
 };
 
 //Liste des jeux
-listMembreJeux.importMembreJeuxInTable = (jeux) => {
+listMembreJeux.importMembreJeuxInTable = (membreJeux) => {
     const tbody = jQuery("#list-membre-jeux tbody");
-    jeux.forEach((membreJeu) => {
+    membreJeux.forEach((membreJeu) => {
         tbody.append(`
                 <tr data-id="${membreJeu.id_jeux}" >
-                <td>${membreJeu.titre}</td>` + //Ajouter un lien qui permet d'afficher directement les détail de ce jeu.
-                `<td>${membreJeu.joueurs_min}</td>
+                <td>${membreJeu.titre}</td>
+                <td>${membreJeu.joueurs_min}</td>
                 <td>${membreJeu.joueurs_max}</td>
                 <td>${membreJeu.duree}</td>
                 <td>${membreJeu.age_recommande}</td>
@@ -201,10 +196,23 @@ listMembreJeux.importMembreJeuxInTable = (jeux) => {
                 <td>${membreJeu.mecanisme2}</td>
                 <td>${membreJeu.editeur}</td>
                 <td>
-                    <button onclick="listJeux.confirmRemove(${membreJeu.id_jeux})" class ="btn btn-danger remove-line">Supprimer
+                    <button onclick="listJeux.confirmRemove(${membreJeu.id_jeux})" class = "btn btn-danger remove-line">Supprimer
                 </td>
+                <td>
+                    <button onclick="listJeux.jeuDetail(${membreJeu.id_jeux})" class = "btn btn-info">Détails`+ //Ajouter l'action du bouton
+                `</td>
             </tr>`);
     });
 };
 
-listMembreJeux.init();
+//Vider la liste des jeux d'un membre pour permettre d'afficher d'autres listes
+listMembreJeux.emptyList = () => {
+    $("#body-list-membre-jeux").empty();
+}
+
+//Affichage des jeux d'un membre
+listMembreJeux.showJeux = (membreId) => {
+    listMembreJeux.emptyList();
+    listMembreJeux.init(membreId);
+    display.showMembreJeux();
+};

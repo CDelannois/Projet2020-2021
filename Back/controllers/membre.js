@@ -33,37 +33,29 @@ module.exports = (app, queryPromise) => {
     //Ajout d'un membre
     app.post("/membre", async (req, res) => {
         const membre = req.body;
-
-        db.queryPromise("INSERT INTO membre (id_membre, nom, prenom, telephone, email, adresse, date_naissance) VALUES (NULL,?,?,?,?,?,?)", [membre.nom, membre.prenom, membre.telephone, membre.email, membre.adresse, membre.date_naissance], (error, result) => {
-            if (error) {
-                return res
-                    .status(400)
-                    .json({
-                        error: "Impossible d'ajouter le membre."
-                    })
-            }
-
-            const idMembre = result.insertId;
-
-            db.queryPromise("select * from membre where id_membre = ?", [idMembre], function (error, result) {
-                if (error) {
-                    return res
-                        .status(400)
-                        .json({
-                            error: "Impossible d'afficher le nouveau membre."
-                        });
-                }
-                const membre = result.shift();
-
+        try {
+            const {
+                insertId,
+            } = await queryPromise("INSERT INTO membre (id_membre, nom, prenom, telephone, email, adresse, date_naissance) VALUES (NULL,?,?,?,?,?,?)", [membre.nom, membre.prenom, membre.telephone, membre.email, membre.adresse, membre.date_naissance]);
+            if (insertId != null) {
+                const [membre] = await queryPromise("SELECT * FROM membre WHERE id_membre = ?", [insertId]);
                 if (membre) {
                     return res.json(membre);
                 }
-
-                res.status(404).json({
-                    error: "Impossible d'afficher le membre!"
+            }
+            return res
+                .status(400)
+                .json({
+                    error: "Impossible d'afficher le nouveau membre."
                 });
-            });
-        })
+        } catch (e) {
+            console.log(e);
+            return res
+                .status(400)
+                .json({
+                    error: "Impossible d'afficher le nouveau membre."
+                });
+        }
     });
 
     //Editer un membre

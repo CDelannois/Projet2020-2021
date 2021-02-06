@@ -90,8 +90,10 @@ edition.saveMembre = async (event) => {
         } else {
             listMembre.importMembreInTable([newMembre]);
         }
+
         edition.hideForm();
     } catch (error) {
+        console.log("Something went wrong!")
         console.error(error);
     }
 }
