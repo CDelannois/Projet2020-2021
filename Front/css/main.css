@@ -1,3 +1,3 @@
-#button-cancel-edit, #container-form, #button-add-jeu, #button-display-membre, #jeux_table, #membre_jeux_table{
+#button-cancel-edit-membre,#button-cancel-edit-jeu, #container-form-membre, #container-form-jeu, #button-display-membre, #jeux_table, #membre_jeux_table, #appartient, #button-add-jeu{
     display: none;
 }

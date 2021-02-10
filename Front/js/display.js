@@ -30,6 +30,8 @@ display.showMembreJeux = () => {
     jQuery('#jeux_table').hide();
     jQuery('#membre_table').hide();
     jQuery('#membre_jeux_table').show();
+    jQuery('#button-add-membre').hide();
+    jQuery('#button-add-jeu').show();
     display.buttonDisplayJeux.show();
     display.buttonDisplayMembre.show();
 }

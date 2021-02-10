@@ -14,9 +14,10 @@
 <div class="row">
   <div class="col-12">
     <div class="text-right p-4">
-      <button class="btn btn-success" id="button-add-membre" onclick="edition.showForm()">Ajouter un membre</button><!--Le bouton ne doit apparaitre que quand on affiche les membres-->
-      <button class="btn btn-success" id="button-add-jeu" onclick="edition.showForm()">Ajouter un jeu</button><!--Le bouton ne doit apparaitre que quand on affiche un membre en particulier-->
-      <button class="btn btn-danger" id="button-cancel-edit" onclick="edition.hideForm()">Annuler</button>
+      <button class="btn btn-success" id="button-add-membre" onclick="edition.showFormMembre()">Ajouter un membre</button><!--Le bouton ne doit apparaitre que quand on affiche les membres-->
+      <button class="btn btn-success" id="button-add-jeu" onclick="edition.showFormJeu()">Ajouter un jeu
+      <button class="btn btn-danger" id="button-cancel-edit-membre" onclick="edition.hideFormMembre()">Annuler</button>
+      <button class="btn btn-danger" id="button-cancel-edit-jeu" onclick="edition.hideFormJeu()">Annuler</button>
       <button class="btn btn-info" id="button-display-jeux" onclick="display.showJeux()">Jeux</button><!--Le bouton ne doit apparaitre que quand on affiche les membres-->
       <button class="btn btn-info" id="button-display-membre" onclick="display.showMembre()">Membres</button><!--Le bouton ne doit apparaitre que quand on affiche les jeux-->
     </div>
@@ -25,7 +26,7 @@
 
 
 <!--Formulaire pour ajouter un membre-->
-<div class="row mb-4" id="container-form">
+<div class="row mb-4" id="container-form-membre">
   <div class="col-8 offset-2">
     <div class="card">
       <div class="card-header">
@@ -33,7 +34,7 @@
       </div>
       <div class="card-body">
         <form>
-          <input type="hidden" name="id" id="id_membre" required>
+          <input type="hidden" name="id_membre" id="id_membre" required>
           <div class="form-group">
             <label for="nom">Nom</label>
             <input type="text" class="form-control" id="nom" placeholder="Nom du nouveau membre" required>
@@ -66,14 +67,15 @@
 </div>
 
 <!--Formulaire pour ajouter un jeu-->
-<div class="row mb-4" id="container-form">
+<div class="row mb-4" id="container-form-jeu">
     <div class="col-8 offset-2">
       <div class="card">
         <div class="card-header">
           Ajouter un jeu
         </div>
         <div class="card-body">
-          <form id="membreForm">
+          <form>
+            <input type="hidden" name="id_jeu" id="id_jeu" required>
             <div class="form-group">
               <label for="titre">Titre</label>
               <input type="text" class="form-control" id="titre" placeholder="Titre du nouveau jeu">
@@ -107,18 +109,17 @@
                 <input type="date" class="form-control" id="date_parution">
               </div>
               <div class="form-group">
-                <label for="Editeur">Editeur</label>
+                <label for="editeur">Editeur</label>
                 <input type="text" class="form-control" id="editeur" placeholder="Exemple: Iello">
               </div>
               <div class="form-group">
                 <label for="commentaire">Commentaire sur l'état du jeu (facultatif)</label><!--Afficher un message précisant le nombre de caractères disponible.-->
-                <input type="text" class="form-control" id="joueurs_max" placeholder="200 caractères max">
+                <input type="text" class="form-control" id="commentaire" placeholder="200 caractères max">
               </div>
               <div class="form-group">
-                <label for="appartient">Nombre maximum de joueurs</label>
-                <input type="text" class="form-control" id="appartient">
+                <input type="hidden" class="form-control" id="appartient">
               </div>
-            <button type="submit" onclick="edition.save(event)" class="btn btn-primary">Envoyer</button>
+            <button type="submit" onclick="edition.saveJeu(event)" class="btn btn-primary">Envoyer</button>
           </form>
         </div>
       </div>
@@ -215,6 +216,7 @@
 
 <!--Tableau des jeux d'un membre-->
   <div class="row" id="membre_jeux_table">
+    <!--Afficher le nom du joueur auquel appartiennent les jeux-->
     <div class="col-12">
       <table id="list-membre-jeux" class="table">
         <thead>

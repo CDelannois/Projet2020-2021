@@ -23,7 +23,7 @@ listMembre.getMembre = () => {
 };
 
 //Confirmation de la suppression
-listMembre.confirmRemove = (membreId) => {
+listMembre.confirmRemoveMembre = (membreId) => {
     listMembre.membreToRemove = membreId;
     console.log('ID ', membreId);
     jQuery('#remove-membre-modal').modal('toggle');
@@ -70,10 +70,10 @@ listMembre.importMembreInTable = (membres, clear) => {
                     <button onclick="listMembreJeux.showJeux(${membre.id_membre})" class ="btn btn-info">Voir les jeux
                 </td>
                 <td>
-                    <button onclick="edition.showForm(${membre.id_membre})" class ="btn btn-primary">Modifier
+                    <button onclick="edition.showFormMembre(${membre.id_membre})" class ="btn btn-primary">Modifier
                 </td>
                 <td>
-                    <button onclick="listMembre.confirmRemove(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
+                    <button onclick="listMembre.confirmRemoveMembre(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
                 </td>
             </tr>`;
         })
@@ -86,8 +86,8 @@ listMembre.init();
 const listJeux = {};
 listJeux.jeuxToRemove = null;
 listJeux.init = async () => {
-    const jeu = await listJeux.getJeux();
-    listJeux.importJeuxInTable(jeu);
+    listJeux.jeu = await listJeux.getJeux();
+    listJeux.importJeuxInTable(listJeux.jeu);
 }
 
 //Récupération des jeux
@@ -109,7 +109,7 @@ listJeux.jeuDetail = () => {
 }
 
 //Confirmation de la suppression
-listJeux.confirmRemove = (jeuId) => {
+listJeux.confirmRemoveJeu = (jeuId) => {
     listJeux.jeuxToRemove = jeuId;
     console.log('ID ', jeuId);
     jQuery('#remove-jeu-modal').modal('toggle');
@@ -139,8 +139,8 @@ listJeux.importJeuxInTable = (jeux) => {
     jeux.forEach((jeu) => {
         tbody.append(`
                 <tr data-id="${jeu.id_jeux}" >
-                <td>${jeu.titre}</td>` + //Ajouter un lien qui permet d'afficher directement les détail de ce jeu.
-            `<td>${jeu.joueurs_min}</td>
+                <td>${jeu.titre}</td>
+                <td>${jeu.joueurs_min}</td>
                 <td>${jeu.joueurs_max}</td>
                 <td>${jeu.duree}</td>
                 <td>${jeu.age_recommande}</td>
@@ -148,7 +148,10 @@ listJeux.importJeuxInTable = (jeux) => {
                 <td>${jeu.mecanisme2}</td>
                 <td>${jeu.editeur}</td>
                 <td>
-                    <button onclick="listJeux.confirmRemove(${jeu.id_jeux})" class ="btn btn-danger remove-line">Supprimer
+                    <button onclick="edition.showFormJeu(${jeu.id_jeux})" class = "btn btn-primary">Modifier
+                </td>
+                <td>
+                    <button onclick="listJeux.confirmRemoveJeu(${jeu.id_jeux})" class ="btn btn-danger remove-line">Supprimer
                 </td>
                 <td>
                     <button onclick="listJeux.jeuDetail(${jeu.id_jeux})" class = "btn btn-info">Détails`+ //Ajouter l'action du bouton
@@ -163,9 +166,8 @@ listJeux.init();
 const listMembreJeux = {};
 
 listMembreJeux.init = async (membreId) => {
-    const membreJeu = await listMembreJeux.getMembreJeux(membreId);
-    listMembreJeux.importMembreJeuxInTable(membreJeu);
-    console.log(membreJeu);
+    listMembreJeux.membreJeu = await listMembreJeux.getMembreJeux(membreId);
+    listMembreJeux.importMembreJeuxInTable(listMembreJeux.membreJeu);
 }
 
 //Récupération des jeux liés aux membres
@@ -186,7 +188,7 @@ listMembreJeux.importMembreJeuxInTable = (membreJeux) => {
     const tbody = jQuery("#list-membre-jeux tbody");
     membreJeux.forEach((membreJeu) => {
         tbody.append(`
-                <tr data-id="${membreJeu.id_jeux}" >
+            <tr data-id="${membreJeu.id_jeux}">
                 <td>${membreJeu.titre}</td>
                 <td>${membreJeu.joueurs_min}</td>
                 <td>${membreJeu.joueurs_max}</td>
@@ -195,8 +197,12 @@ listMembreJeux.importMembreJeuxInTable = (membreJeux) => {
                 <td>${membreJeu.mecanisme}</td>
                 <td>${membreJeu.mecanisme2}</td>
                 <td>${membreJeu.editeur}</td>
+                <td id="appartient">${membreJeu.appartient}</td>
                 <td>
-                    <button onclick="listJeux.confirmRemove(${membreJeu.id_jeux})" class = "btn btn-danger remove-line">Supprimer
+                    <button onclick="edition.showFormJeu(${membreJeu.id_jeux})" class = "btn btn-primary">Modifier
+                </td>
+                <td>
+                    <button onclick="listJeux.confirmRemoveJeu(${membreJeu.id_jeux})" class = "btn btn-danger remove-line">Supprimer
                 </td>
                 <td>
                     <button onclick="listJeux.jeuDetail(${membreJeu.id_jeux})" class = "btn btn-info">Détails`+ //Ajouter l'action du bouton
