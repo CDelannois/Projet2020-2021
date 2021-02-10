@@ -10,6 +10,7 @@ display.showJeux = () => {
     jQuery('#jeux_table').show();
     jQuery('#membre_table').hide();
     jQuery('#membre_jeux_table').hide();
+    jQuery('#button-add-jeu').hide();
     display.buttonDisplayJeux.hide();
     display.buttonDisplayMembre.show();
     edition.buttonAddMembre.hide();
@@ -20,6 +21,7 @@ display.showMembre = () => {
     jQuery('#jeux_table').hide();
     jQuery('#membre_table').show();
     jQuery('#membre_jeux_table').hide();
+    jQuery('#button-add-jeu').hide();
     display.buttonDisplayJeux.show();
     display.buttonDisplayMembre.hide();
     edition.buttonAddMembre.show();

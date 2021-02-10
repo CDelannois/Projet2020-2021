@@ -15,6 +15,7 @@ edition.showFormMembre = (membreID) => {
     }
     jQuery('#container-form-membre').fadeIn();
     edition.buttonAddMembre.hide();
+    display.buttonDisplayJeux.hide();
     edition.buttonCancelEditMembre.show();
 };
 
@@ -39,6 +40,7 @@ edition.populateMembre = (membreID) => {
 edition.hideFormMembre = () => {
     jQuery('#container-form-membre').fadeOut();
     edition.buttonAddMembre.show();
+    display.buttonDisplayJeux.show();
     edition.buttonCancelEditMembre.hide();
     edition.cleanFormMembre();
 };
@@ -105,10 +107,13 @@ edition.showFormJeu = (jeuID) => {
     //si on a un ID, on appelle populate
     if (jeuID) {
         edition.populateJeu(jeuID);
-        console.log("L'ID du jeu à modifier est : " + jeuID);
     }
     jQuery('#container-form-jeu').fadeIn();
+    jQuery('#button-add-jeu').hide();
+    display.buttonDisplayJeux.hide();
+    display.buttonDisplayMembre.hide();
     edition.buttonCancelEditJeu.show();
+
 };
 
 //Pour l'édition d'un jeu: on récupère les infos qu'on place dans le formulaire.
@@ -119,7 +124,7 @@ edition.populateJeu = (jeuID) => {
     //Si le jeu existe
     if (jeu) {
         const date = jeu.date_parution.slice(0, 10);
-        jQuery('#id_jeu').val(jeu.id_jeu);
+        jQuery('#id_jeux').val(jeu.id_jeux);
         jQuery('#titre').val(jeu.titre);
         jQuery('#joueurs_min').val(jeu.joueurs_min);
         jQuery('#joueurs_max').val(jeu.joueurs_max);
@@ -138,11 +143,14 @@ edition.populateJeu = (jeuID) => {
 edition.hideFormJeu = () => {
     jQuery('#container-form-jeu').fadeOut();
     edition.buttonCancelEditJeu.hide();
+    display.buttonDisplayJeux.show();
+    display.buttonDisplayMembre.show();
+    jQuery('#button-add-jeu').show();
     edition.cleanFormJeu();
 };
 
 edition.cleanFormJeu = () => {
-    jQuery('#id_jeu').val('');
+    jQuery('#id_jeux').val('');
     jQuery('#titre').val('');
     jQuery('#joueurs_min').val('');
     jQuery('#joueurs_max').val('');
@@ -159,7 +167,7 @@ edition.cleanFormJeu = () => {
 //Valider l'enregistrement d'un jeu
 edition.saveJeu = async (event) => {
     event.preventDefault(); //Arrêter l'exécution de l'envoi
-    const id = jQuery('#id_jeu').val();
+    const id = jQuery('#id_jeux').val();
     const isEdition = id.length > 0;
     const titre = jQuery('#titre').val();
     const joueurs_min = jQuery('#joueurs_min').val();
@@ -199,7 +207,7 @@ edition.saveJeu = async (event) => {
             }
         });
         if (isEdition) {
-            listMembreJeux.init();
+            listJeux.init();
         } else {
             listJeux.importJeuxInTable([newJeu]);
         }

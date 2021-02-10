@@ -34,14 +34,27 @@ module.exports = (app, queryPromise) => {
     app.post("/jeux", async (req, res) => {
         const data = req.body;
         try {
-            const add = await queryPromise("INSERT INTO jeux (id_jeux, titre, joueurs_min, joueurs_max, duree, age_recommande, mecanisme, mecanisme2, date_parution, editeur, commentaire, appartient) VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)", [data.titre, data.joueurs_min, data.joueurs_max, data.duree, data.age_recommande, data.mecanisme, data.mecanisme2, data.date_parution, data.editeur, data.commentaire, data.appartient]);
-            return res.status(200).json({
-                ok: "Félicitations pour le nouveau jeu!"
-            });
+            const {
+                insertId,
+            } = await queryPromise("INSERT INTO jeux (id_jeux, titre, joueurs_min, joueurs_max, duree, age_recommande, mecanisme, mecanisme2, date_parution, editeur, commentaire, appartient) VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)", [data.titre, data.joueurs_min, data.joueurs_max, data.duree, data.age_recommande, data.mecanisme, data.mecanisme2, data.date_parution, data.editeur, data.commentaire, data.appartient]);
+            if (insertId != null) {
+                const [jeu] = await queryPromise("SELECT * FROM jeux WHERE id_jeux=?", [insertId]);
+                if (jeu) {
+                    return res.json(jeu);
+                }
+            }
+            return res
+                .status(400)
+                .json({
+                    error: "Impossible d'afficher le nouveau jeu."
+                });
         } catch (e) {
-            return res.status(400).json({
-                error: "Une erreur est survenue! " + e
-            });
+            console.log(e);
+            return res
+                .status(400)
+                .json({
+                    error: "Impossible d'afficher le nouveau jeu."
+                })
         }
     });
 
