@@ -87,7 +87,7 @@ const listJeux = {};
 listJeux.jeuxToRemove = null;
 listJeux.init = async () => {
     listJeux.jeu = await listJeux.getJeux();
-    listJeux.importJeuxInTable(listJeux.jeu);
+    listJeux.importJeuxInTable(listJeux.jeu, true);
 }
 
 //Récupération des jeux
@@ -111,7 +111,6 @@ listJeux.jeuDetail = () => {
 //Confirmation de la suppression
 listJeux.confirmRemoveJeu = (jeuId) => {
     listJeux.jeuxToRemove = jeuId;
-    console.log('ID ', jeuId);
     jQuery('#remove-jeu-modal').modal('toggle');
 }
 
@@ -134,8 +133,14 @@ listJeux.remove = async () => {
 }
 
 //Liste des jeux
-listJeux.importJeuxInTable = (jeux) => {
+listJeux.importJeuxInTable = (jeux, clear) => {
+
     const tbody = jQuery("#list-jeux tbody");
+
+    if (clear === true) {
+        tbody.empty();
+    }
+
     jeux.forEach((jeu) => {
         tbody.append(`
                 <tr data-id="${jeu.id_jeux}" >
@@ -167,7 +172,7 @@ const listMembreJeux = {};
 
 listMembreJeux.init = async (membreId) => {
     listMembreJeux.membreJeu = await listMembreJeux.getMembreJeux(membreId);
-    listMembreJeux.importMembreJeuxInTable(listMembreJeux.membreJeu);
+    listMembreJeux.importMembreJeuxInTable(listMembreJeux.membreJeu, true);
 }
 
 //Récupération des jeux liés aux membres
@@ -184,8 +189,13 @@ listMembreJeux.getMembreJeux = (membreId) => {
 };
 
 //Liste des jeux
-listMembreJeux.importMembreJeuxInTable = (membreJeux) => {
+listMembreJeux.importMembreJeuxInTable = (membreJeux, clear) => {
     const tbody = jQuery("#list-membre-jeux tbody");
+
+    if (clear === true) {
+        tbody.empty();
+    }
+
     membreJeux.forEach((membreJeu) => {
         tbody.append(`
             <tr data-id="${membreJeu.id_jeux}">
@@ -222,3 +232,5 @@ listMembreJeux.showJeux = (membreId) => {
     listMembreJeux.init(membreId);
     display.showMembreJeux();
 };
+
+listMembreJeux.init();

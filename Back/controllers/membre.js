@@ -88,6 +88,7 @@ module.exports = (app, queryPromise) => {
             membre.email = email;
             membre.adresse = adresse;
             membre.date_naissance = date_naissance;
+            
             const add = await queryPromise("UPDATE membre SET nom = ?, prenom = ?, telephone = ?, email = ?, adresse = ?, date_naissance = ? WHERE id_membre = ?", [membre.nom, membre.prenom, membre.telephone, membre.email, membre.adresse, membre.date_naissance, membre.id_membre]);
             res.json(membre);
         } catch (e) {

@@ -172,7 +172,7 @@ edition.saveJeu = async (event) => {
     const titre = jQuery('#titre').val();
     const joueurs_min = jQuery('#joueurs_min').val();
     const joueurs_max = jQuery('#joueurs_max').val();
-    const duree = jQuery('#duree').val(); //Il faudra ajouter une vérification pour que l'adresse respecte le format *@*.* voir https://www.w3resource.com/javascript/form/email-validation.php
+    const duree = jQuery('#duree').val(); 
     const age_recommande = jQuery('#age_recommande').val();
     const mecanisme = jQuery('#mecanisme').val();
     const mecanisme2 = jQuery('#mecanisme2').val();
@@ -186,7 +186,6 @@ edition.saveJeu = async (event) => {
     if (isEdition) {
         url += `/${id}`;
     }
-
 
     try {
         const newJeu = await jQuery.ajax({
@@ -208,6 +207,7 @@ edition.saveJeu = async (event) => {
         });
         if (isEdition) {
             listJeux.init();
+            listMembreJeux.init(appartient);
         } else {
             listJeux.importJeuxInTable([newJeu]);
         }

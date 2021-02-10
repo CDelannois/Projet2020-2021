@@ -83,6 +83,8 @@ module.exports = (app, queryPromise) => {
                     error: "Ce jeu n'existe pas."
                 });
             }
+
+            //Mise à jour du jeu
             const jeu = edit[0];
             jeu.id_jeux;
             jeu.titre = titre;
@@ -97,7 +99,6 @@ module.exports = (app, queryPromise) => {
             jeu.commentaire = commentaire;
             jeu.appartient = appartient;
 
-            //Mise à jour du jeu
             const add = await queryPromise("UPDATE jeux SET titre = ?, joueurs_min = ?, joueurs_max = ?, duree = ?, age_recommande = ?, mecanisme = ?, mecanisme2 = ?, date_parution = ?, editeur = ?, commentaire = ?, appartient = ? WHERE id_jeux = ?", [jeu.titre, jeu.joueurs_min, jeu.joueurs_max, jeu.duree, jeu.age_recommande, jeu.mecanisme, jeu.mecanisme2, jeu.date_parution, jeu.editeur, jeu.commentaire, jeu.appartient, jeu.id_jeux]);
             res.json(jeu);
         } catch (e) {
