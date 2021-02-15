@@ -1,3 +1,27 @@
-#button-cancel-edit-membre,#button-cancel-edit-jeu, #container-form-membre, #container-form-jeu, #button-display-membre, #jeux_table, #membre_jeux_table, #appartient, #button-add-jeu{
+#button-cancel-edit-membre,
+#button-cancel-edit-jeu,
+#container-form-membre,
+#container-form-jeu,
+#button-display-membre,
+#jeux_table,
+#membre_jeux_table,
+#appartient,
+#button-add-jeu {
     display: none;
+}
+
+body {
+    background-color: rgb(0, 0, 0);
+}
+
+.table {
+    color: azure;
+}
+
+#jeu-detail-table{
+    text-align: center;
+}
+
+#details-list td{
+    border-style: hidden;
 }

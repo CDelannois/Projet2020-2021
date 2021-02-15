@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
 
+
 gulp.task('vendor-css', () => {
     return gulp.src([
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
@@ -34,8 +35,9 @@ gulp.task("serve", (cb) => {
         server: './'
     });
     gulp.watch('*.html').on('change', browserSync.reload);
-    gulp.watch('js/*.js').on('change', gulp.series('app-js', browserSync.reload));
     gulp.watch('css/*.css').on('change', browserSync.reload);
+    gulp.watch('js/*.js').on('change', gulp.series('app-js', browserSync.reload));
+
 });
 
 gulp.task('dev', gulp.series('vendor-js', 'vendor-css', 'app-js', 'serve'));

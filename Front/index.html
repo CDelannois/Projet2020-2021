@@ -9,17 +9,20 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 
-
 <!--Boutons-->
 <div class="row">
   <div class="col-12">
     <div class="text-right p-4">
-      <button class="btn btn-success" id="button-add-membre" onclick="edition.showFormMembre()">Ajouter un membre</button><!--Le bouton ne doit apparaitre que quand on affiche les membres-->
+      <button class="btn btn-success" id="button-add-membre" onclick="edition.showFormMembre()">Ajouter un
+        membre</button>
       <button class="btn btn-success" id="button-add-jeu" onclick="edition.showFormJeu()">Ajouter un jeu
-      <button class="btn btn-danger" id="button-cancel-edit-membre" onclick="edition.hideFormMembre()">Annuler</button>
-      <button class="btn btn-danger" id="button-cancel-edit-jeu" onclick="edition.hideFormJeu()">Annuler</button>
-      <button class="btn btn-info" id="button-display-jeux" onclick="display.showJeux()">Jeux</button><!--Le bouton ne doit apparaitre que quand on affiche les membres-->
-      <button class="btn btn-info" id="button-display-membre" onclick="display.showMembre()">Membres</button><!--Le bouton ne doit apparaitre que quand on affiche les jeux-->
+        <button class="btn btn-danger" id="button-cancel-edit-membre"
+          onclick="edition.hideFormMembre()">Annuler</button>
+        <button class="btn btn-danger" id="button-cancel-edit-jeu" onclick="edition.hideFormJeu()">Annuler</button>
+        <button class="btn btn-info" id="button-display-jeux" onclick="display.showJeux()">Jeux</button>
+        <!--Le bouton ne doit apparaitre que quand on affiche les membres-->
+        <button class="btn btn-info" id="button-display-membre" onclick="display.showMembre()">Membres</button>
+        <!--Le bouton ne doit apparaitre que quand on affiche les jeux-->
     </div>
   </div>
 </div>
@@ -45,7 +48,8 @@
           </div>
           <div class="form-group">
             <label for="telephone">Numéro de téléphone</label>
-            <input type="text" class="form-control" id="telephone" placeholder="Numéro de téléphone du nouveau membre" required>
+            <input type="text" class="form-control" id="telephone" placeholder="Numéro de téléphone du nouveau membre"
+              required>
           </div>
           <div class="form-group">
             <label for="email">Adresse mail</label>
@@ -68,66 +72,71 @@
 
 <!--Formulaire pour ajouter un jeu-->
 <div class="row mb-4" id="container-form-jeu">
-    <div class="col-8 offset-2">
-      <div class="card">
-        <div class="card-header">
-          Ajouter un jeu
-        </div>
-        <div class="card-body">
-          <form>
-            <input type="hidden" name="id_jeux" id="id_jeux" required>
-            <div class="form-group">
-              <label for="titre">Titre</label>
-              <input type="text" class="form-control" id="titre" placeholder="Titre du nouveau jeu">
-            </div>
-            <div class="form-group">
-              <label for="joueurs_min">Nombre minimum de joueurs</label>
-              <input type="text" class="form-control" id="joueurs_min" required>
-            </div>
-            <div class="form-group">
-                <label for="joueurs_max">Nombre maximum de joueurs</label>
-                <input type="text" class="form-control" id="joueurs_max" required>
-              </div>
-              <div class="form-group">
-                <label for="duree">Durée moyenne du jeu en minutes</label>
-                <input type="text" class="form-control" id="duree" placeholder="En minutes">
-              </div>
-              <div class="form-group">
-                <label for="age_recommande">Age recommandé pour jouer</label>
-                <input type="text" class="form-control" id="age_recommande">
-              </div>
-              <div class="form-group">
-                <label for="mecanisme">Mecanisme principal du jeu</label>
-                <input type="text" class="form-control" id="mecanisme" placeholder="Exemple: draft">
-              </div>
-              <div class="form-group">
-                <label for="mecanisme2">Mecanisme secondaire du jeu (facultatif)</label>
-                <input type="text" class="form-control" id="mecanisme2" placeholder="Exemple: bluff">
-              </div>
-              <div class="form-group">
-                <label for="date_parution">Date de la parution du jeu</label>
-                <input type="date" class="form-control" id="date_parution">
-              </div>
-              <div class="form-group">
-                <label for="editeur">Editeur</label>
-                <input type="text" class="form-control" id="editeur" placeholder="Exemple: Iello">
-              </div>
-              <div class="form-group">
-                <label for="commentaire">Commentaire sur l'état du jeu (facultatif)</label><!--Afficher un message précisant le nombre de caractères disponible.-->
-                <input type="text" class="form-control" id="commentaire" placeholder="200 caractères max">
-              </div>
-              <div class="form-group">
-                <input type="hidden" class="form-control" id="appartient">
-              </div>
-            <button type="submit" onclick="edition.saveJeu(event)" class="btn btn-primary">Envoyer</button>
-          </form>
-        </div>
+  <div class="col-8 offset-2">
+    <div class="card">
+      <div class="card-header">
+        Ajouter un jeu
+      </div>
+      <div class="card-body">
+        <form>
+          <input type="hidden" name="id_jeux" id="id_jeux" required>
+          <div class="form-group">
+            <label for="titre">Titre</label>
+            <input type="text" class="form-control" id="titre" placeholder="Titre du nouveau jeu">
+          </div>
+          <div class="form-group">
+            <label for="joueurs_min">Nombre minimum de joueurs</label>
+            <input type="text" class="form-control" id="joueurs_min" required>
+          </div>
+          <div class="form-group">
+            <label for="joueurs_max">Nombre maximum de joueurs</label>
+            <input type="text" class="form-control" id="joueurs_max" required>
+          </div>
+          <div class="form-group">
+            <label for="duree">Durée moyenne du jeu en minutes</label>
+            <input type="text" class="form-control" id="duree" placeholder="En minutes">
+          </div>
+          <div class="form-group">
+            <label for="age_recommande">Age recommandé pour jouer</label>
+            <input type="text" class="form-control" id="age_recommande">
+          </div>
+          <div class="form-group">
+            <label for="mecanisme">Mecanisme principal du jeu</label>
+            <input type="text" class="form-control" id="mecanisme" placeholder="Exemple: draft">
+          </div>
+          <div class="form-group">
+            <label for="mecanisme2">Mecanisme secondaire du jeu (facultatif)</label>
+            <input type="text" class="form-control" id="mecanisme2" placeholder="Exemple: bluff">
+          </div>
+          <div class="form-group">
+            <label for="date_parution">Date de la parution du jeu</label>
+            <input type="date" class="form-control" id="date_parution">
+          </div>
+          <div class="form-group">
+            <label for="editeur">Editeur</label>
+            <input type="text" class="form-control" id="editeur" placeholder="Exemple: Iello">
+          </div>
+          <div class="form-group">
+            <label for="commentaire">Commentaire sur l'état du jeu (facultatif)</label>
+            <!--Afficher un message précisant le nombre de caractères disponible.-->
+            <input type="text" class="form-control" id="commentaire" placeholder="200 caractères max">
+          </div>
+          <div class="form-group">
+            <label for="appartient">Membre</label>
+            <select id="jeuAppartient" name="jeuAppartient" class="form-control">
+
+            </select>
+          </div>
+          <button type="submit" onclick="edition.saveJeu(event)" class="btn btn-primary">Envoyer</button>
+        </form>
       </div>
     </div>
   </div>
+</div>
 
 
 <!--Affichage des membres-->
+
 <body>
   <div class="row" id="membre_table">
     <div class="col-12">
@@ -150,7 +159,8 @@
   </div>
 
   <!--Modal de suppression des membres-->
-  <div class="modal fade" id="remove-membre-modal" tabindex="-1" aria-labelledby="remove-membre-modal" aria-hidden="true">
+  <div class="modal fade" id="remove-membre-modal" tabindex="-1" aria-labelledby="remove-membre-modal"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -192,9 +202,9 @@
       </table>
     </div>
   </div>
-  
+
   <!--Modal de suppression des jeux-->
-  <div class="modal fade" id="remove-jeu-modal" tabindex="-1" aria-labelledby="remove-jeux-modal" aria-hidden="true">
+  <div class="modal fade" id="remove-jeu-modal" tabindex="-1" aria-labelledby="remove-jeu-modal" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -214,9 +224,11 @@
     </div>
   </div>
 
-<!--Tableau des jeux d'un membre-->
+  <!--Tableau des jeux d'un membre-->
   <div class="row" id="membre_jeux_table">
-    <!--Afficher le nom du joueur auquel appartiennent les jeux-->
+    <h1 id='title-list-membre-jeux'>
+      <!--Afficher le nom du joueur auquel appartiennent les jeux-->
+    </h1>
     <div class="col-12">
       <table id="list-membre-jeux" class="table">
         <thead>
@@ -232,6 +244,17 @@
           </tr>
         </thead>
         <tbody id="body-list-membre-jeux">
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!--Affichage d'un jeu-->
+  <div class="row" id="jeu-detail-table">
+    <div class="col-12">
+      <table id="details-list" class="table">
+        <tbody id="body-details-list">
 
         </tbody>
       </table>

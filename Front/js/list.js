@@ -90,11 +90,26 @@ listJeux.init = async () => {
     listJeux.importJeuxInTable(listJeux.jeu, true);
 }
 
+//Affichage d'un jeu
+listJeux.jeuDetail = async (jeuID) => {
+    listJeux.jeu = await listJeux.getJeux(jeuID);
+    listJeux.importOneJeuInTable(listJeux.jeu, true);
+    display.detailJeu();
+}
+
+
 //Récupération des jeux
-listJeux.getJeux = () => {
+listJeux.getJeux = (jeuID) => {
+    let url = 'http://localhost:3000/jeux';
+
+    //Si on a l'ID d'un jeu, on affiche les détails de celui-ci.
+    if (jeuID) {
+        url += `/${jeuID}`;
+    }
+
     return jQuery
         .ajax({
-            url: 'http://localhost:3000/jeux',
+            url,
             method: 'GET'
         })
         .catch((error) => {
@@ -102,11 +117,6 @@ listJeux.getJeux = () => {
             return [];
         })
 };
-
-//Récupération d'un jeu pour afficher les détails
-listJeux.jeuDetail = () => {
-    console.log("Coucou!");
-}
 
 //Confirmation de la suppression
 listJeux.confirmRemoveJeu = (jeuId) => {
@@ -159,11 +169,39 @@ listJeux.importJeuxInTable = (jeux, clear) => {
                     <button onclick="listJeux.confirmRemoveJeu(${jeu.id_jeux})" class ="btn btn-danger remove-line">Supprimer
                 </td>
                 <td>
-                    <button onclick="listJeux.jeuDetail(${jeu.id_jeux})" class = "btn btn-info">Détails`+ //Ajouter l'action du bouton
-                `</td>
+                    <button onclick="listJeux.jeuDetail(${jeu.id_jeux})" class = "btn btn-info">Détails
+                </td>
             </tr>`);
     });
 };
+
+listJeux.importOneJeuInTable = (jeu, clear) => {
+
+    const tbody = jQuery("#details-list tbody")
+
+    if (clear === true) {
+        tbody.empty();
+    }
+
+    jeu.forEach((detail) => {//Arranger l'affichage ==> pour le moment c'est laid.
+    const date = new Date(detail.date_parution);    
+    tbody.append(`
+            
+            <tr data-id="${detail.id_jeux}"> <td>Titre : ${detail.titre}</td></tr>
+            <tr><td>Nombre minimum de joueurs : ${detail.joueurs_min}</td></tr>
+            <tr><td>Nombre maximum de joueurs : ${detail.joueurs_max}</td></tr>
+            <tr><td>Durée du jeu (en minutes) : ${detail.duree}</td></tr>
+            <tr><td>Age minimum recommandé : ${detail.age_recommande}</td></tr>
+            <tr><td>Mecanisme principal du jeu : ${detail.mecanisme}</td></tr>
+            <tr><td>Mecanisme secondaire : ${detail.mecanisme2}</td></tr>
+            <tr><td>Date de parution du jeu : ${date.toLocaleDateString()}</td></tr>
+            <tr><td>Editeur : ${detail.editeur}</td></tr>
+            <tr><td>Commentaire sur le jeu : ${detail.commentaire}</td></tr>
+            <tr><td>Propriétaire : ${detail.prenom} ${detail.nom}</td></tr>
+            
+        `)
+    });
+}
 
 listJeux.init();
 
@@ -215,8 +253,8 @@ listMembreJeux.importMembreJeuxInTable = (membreJeux, clear) => {
                     <button onclick="listJeux.confirmRemoveJeu(${membreJeu.id_jeux})" class = "btn btn-danger remove-line">Supprimer
                 </td>
                 <td>
-                    <button onclick="listJeux.jeuDetail(${membreJeu.id_jeux})" class = "btn btn-info">Détails`+ //Ajouter l'action du bouton
-                `</td>
+                    <button onclick="listJeux.jeuDetail(${membreJeu.id_jeux})" class = "btn btn-info">Détails
+                </td>
             </tr>`);
     });
 };

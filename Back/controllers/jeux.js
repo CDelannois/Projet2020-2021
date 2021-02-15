@@ -15,7 +15,7 @@ module.exports = (app, queryPromise) => {
     app.get("/jeux/:id", async (req, res) => {
         const id = req.params.id;
         try {
-            const jeux = await queryPromise("SELECT * FROM jeux WHERE id_jeux=?", [id]);
+            const jeux = await queryPromise("SELECT * FROM jeux JOIN membre on id_membre = appartient WHERE id_jeux=?", [id]);
             if (jeux.lenght === 0) {
                 return res.status(404).json({
                     error: "Ce jeu n'existe pas!"
