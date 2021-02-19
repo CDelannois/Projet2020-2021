@@ -1,6 +1,8 @@
 // Adapter les dates avec https://www.npmjs.com/package/moment
 
 //_________________________________________________________________________________MEMBRES______________________________________________________________________________________________
+
+
 //Déclaration des variables
 const listMembre = {};
 listMembre.membreToRemove = null;
@@ -25,7 +27,6 @@ listMembre.getMembre = () => {
 //Confirmation de la suppression
 listMembre.confirmRemoveMembre = (membreId) => {
     listMembre.membreToRemove = membreId;
-    console.log('ID ', membreId);
     jQuery('#remove-membre-modal').modal('toggle');
 }
 
@@ -57,7 +58,7 @@ listMembre.importMembreInTable = (membres, clear) => {
 
     tbody.append(
         membres.map((membre) => {
-            const date = new Date(membre.date_naissance);
+            const date = moment(membre.date_naissance).format("DD/MM/YYYY");
             return `
             <tr data-id="${membre.id_membre}" >
                 <td>${membre.nom}</td>
@@ -65,7 +66,7 @@ listMembre.importMembreInTable = (membres, clear) => {
                 <td>${membre.telephone}</td>
                 <td>${membre.email}</td>
                 <td>${membre.adresse}</td>
-                <td>${date.toLocaleDateString()}</td>
+                <td>${date}</td>
                 <td>
                     <button onclick="listMembreJeux.showJeux(${membre.id_membre})" class ="btn btn-info">Voir les jeux
                 </td>
@@ -82,7 +83,8 @@ listMembre.importMembreInTable = (membres, clear) => {
 
 listMembre.init();
 
-//__________________________________________________________________________________JEUX________________________________________________________________________________________________
+//_________________________________________________________________________________JEUX______________________________________________________________________________________________
+
 const listJeux = {};
 listJeux.jeuxToRemove = null;
 listJeux.init = async () => {
@@ -184,8 +186,8 @@ listJeux.importOneJeuInTable = (jeu, clear) => {
     }
 
     jeu.forEach((detail) => {//Arranger l'affichage ==> pour le moment c'est laid.
-    const date = new Date(detail.date_parution);    
-    tbody.append(`
+        const date = moment(detail.date_parution).format("MMMM YYYY");
+        tbody.append(`
             
             <tr data-id="${detail.id_jeux}"> <td>Titre : ${detail.titre}</td></tr>
             <tr><td>Nombre minimum de joueurs : ${detail.joueurs_min}</td></tr>
@@ -194,7 +196,7 @@ listJeux.importOneJeuInTable = (jeu, clear) => {
             <tr><td>Age minimum recommandé : ${detail.age_recommande}</td></tr>
             <tr><td>Mecanisme principal du jeu : ${detail.mecanisme}</td></tr>
             <tr><td>Mecanisme secondaire : ${detail.mecanisme2}</td></tr>
-            <tr><td>Date de parution du jeu : ${date.toLocaleDateString()}</td></tr>
+            <tr><td>Date de parution du jeu : ${date}</td></tr>
             <tr><td>Editeur : ${detail.editeur}</td></tr>
             <tr><td>Commentaire sur le jeu : ${detail.commentaire}</td></tr>
             <tr><td>Propriétaire : ${detail.prenom} ${detail.nom}</td></tr>
@@ -205,7 +207,9 @@ listJeux.importOneJeuInTable = (jeu, clear) => {
 
 listJeux.init();
 
-//_____________________________________________________________________________________JEUX D'UN MEMBRE_________________________________________________________________________________
+//_________________________________________________________________________________JEUX D'UN MEMBRE______________________________________________________________________________________________
+
+
 const listMembreJeux = {};
 
 listMembreJeux.init = async (membreId) => {

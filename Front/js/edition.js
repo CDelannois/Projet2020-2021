@@ -1,12 +1,5 @@
 const edition = {};
 
-//Boutons
-edition.buttonAddMembre = jQuery('#button-add-membre');
-edition.buttonCancelEditMembre = jQuery('#button-cancel-edit-membre');
-edition.buttonCancelEditJeu = jQuery('#button-cancel-edit-jeu');
-
-//___________________________________________________________________________AJOUT ET EDITION MEMBRE____________________________________________________________________________________
-
 //Afficher le formulaire pour ajouter un membre
 edition.showFormMembre = (membreID) => {
     //si on a un ID, on appelle populate
@@ -14,10 +7,10 @@ edition.showFormMembre = (membreID) => {
         edition.populateMembre(membreID);
     }
     jQuery('#container-form-membre').fadeIn();
-    edition.buttonAddMembre.hide();
-    display.buttonDisplayJeux.hide();
-    edition.buttonCancelEditMembre.show();
-    jQuery('#membre_table').hide();
+    jQuery('#button-add-membre').hide();
+    jQuery("#button-display-jeux").hide();
+    jQuery('#button-cancel-edit-membre').show();
+    jQuery('#membre-table').hide();
 };
 
 edition.populateMembre = (membreID) => {
@@ -26,7 +19,7 @@ edition.populateMembre = (membreID) => {
     const membre = listMembre.membre.find(membre => membre.id_membre === membreID);
     //Si le membre existe
     if (membre) {
-        const date = membre.date_naissance.slice(0, 10);
+        const date = moment(membre.date_naissance).add(1, 'd');
         jQuery('#id_membre').val(membre.id_membre);
         jQuery('#nom').val(membre.nom);
         jQuery('#prenom').val(membre.prenom);
@@ -40,11 +33,11 @@ edition.populateMembre = (membreID) => {
 //Effacer le formulaire pour ajouter un membre
 edition.hideFormMembre = () => {
     jQuery('#container-form-membre').fadeOut();
-    edition.buttonAddMembre.show();
-    display.buttonDisplayJeux.show();
-    edition.buttonCancelEditMembre.hide();
+    jQuery('#button-add-membre').show();
+    jQuery("#button-display-jeux").show();
+    jQuery('#button-cancel-edit-membre').hide();
     edition.cleanFormMembre();
-    jQuery('#membre_table').fadeIn();
+    jQuery('#membre-table').fadeIn();
 };
 
 edition.cleanFormMembre = () => {
@@ -68,7 +61,6 @@ edition.saveMembre = async (event) => {
     const email = jQuery('#email').val(); //Il faudra ajouter une vérification pour que l'adresse respecte le format *@*.* voir https://www.w3resource.com/javascript/form/email-validation.php
     const adresse = jQuery('#adresse').val();
     const date_naissance = jQuery('#date_naissance').val();
-
 
     let url = 'http://localhost:3000/membre';
 
@@ -102,7 +94,7 @@ edition.saveMembre = async (event) => {
     }
 }
 
-//__________________________________________________________________________________AJOUT ET EDITION JEUX__________________________________________________________________________________
+//
 edition.membres = [];
 
 edition.init = async () => {
@@ -127,14 +119,16 @@ edition.showFormJeu = (jeuID) => {
     //si on a un ID, on appelle populate
     if (jeuID) {
         edition.populateJeu(jeuID);
+        jQuery('#membre-jeux-table').hide();
     }
     jQuery('#container-form-jeu').fadeIn();
     jQuery('#button-add-jeu').hide();
     jQuery('#button-add-membre').hide();
-    display.buttonDisplayJeux.hide();
-    display.buttonDisplayMembre.hide();
-    edition.buttonCancelEditJeu.show();
-    jQuery('#jeux_table').hide();
+    jQuery("#button-display-jeux").hide();
+    jQuery("#button-display-membre").hide();
+    jQuery('#button-cancel-edit-jeu').show();
+    jQuery('#jeux-table').hide();
+    jQuery("#error-modal").modal('hide');
 
 };
 
@@ -149,11 +143,9 @@ edition.fillSelectMembres = (membres) => {
 edition.init();
 //Pour l'édition d'un jeu: on récupère les infos qu'on place dans le formulaire.
 edition.populateJeu = (jeuID) => {
-    console.log(jeuID);
     edition.cleanFormJeu();
     //D'abord on récupère l'ID du jeu à modifier
     const jeu = listJeux.jeu.find(jeu => jeu.id_jeux === jeuID);
-    console.log(jeu);
     //Si le jeu existe
     if (jeu) {
         const date = jeu.date_parution.slice(0, 10);
@@ -175,13 +167,13 @@ edition.populateJeu = (jeuID) => {
 //Effacer le formulaire pour ajouter un jeu
 edition.hideFormJeu = () => {
     jQuery('#container-form-jeu').fadeOut();
-    edition.buttonCancelEditJeu.hide();
-    display.buttonDisplayJeux.show();
-    display.buttonDisplayMembre.show();
+    jQuery('#button-cancel-edit-jeu').hide();
+    jQuery("#button-display-jeux").show();
+    jQuery("#button-display-membre").show();
     jQuery('#button-add-jeu').show();
     edition.cleanFormJeu();
-    jQuery('#membre_table').hide();
-    jQuery('#jeux_table').show();
+    jQuery('#membre-table').hide();
+    jQuery('#jeux-table').show();
 };
 
 edition.cleanFormJeu = () => {
@@ -200,8 +192,9 @@ edition.cleanFormJeu = () => {
 }
 
 //Valider l'enregistrement d'un jeu
-edition.saveJeu = async (event) => {
+edition.verificationSaveJeu = (event) => {
     event.preventDefault(); //Arrêter l'exécution de l'envoi
+
     const id = jQuery('#id_jeux').val();
     const isEdition = id.length > 0;
     const titre = jQuery('#titre').val();
@@ -216,39 +209,54 @@ edition.saveJeu = async (event) => {
     const commentaire = jQuery('#commentaire').val();
     const appartient = jQuery('#jeuAppartient').val();
 
-    let url = 'http://localhost:3000/jeux';
+    if (joueurs_min > joueurs_max) {
 
-    if (isEdition) {
-        url += `/${id}`;
-    }
-
-    try {
-        const newJeu = await jQuery.ajax({
-            url,
-            method: "POST",
-            data: {
-                titre,
-                joueurs_min,
-                joueurs_max,
-                duree,
-                age_recommande,
-                mecanisme,
-                mecanisme2,
-                date_parution,
-                editeur,
-                commentaire,
-                appartient,
-            }
+        $('#corriger').click(() => {
+            console.log("Le jeu à modifier est le jeu n° " + id);
+            edition.showFormJeu(id); //Ne fonctionne pas correctement!
         });
-        if (isEdition) {
-            listJeux.init();
-            listMembreJeux.init(appartient);
-        } else {
-            listJeux.importJeuxInTable([newJeu]);
+        let message = $('#error-message')[0];
+        message.textContent = 'Le nombre de joueurs minimum est plus grand que le nombre de joueurs maximum!';
+        jQuery('#error-modal').modal('toggle');
+    } else {
+        edition.saveJeu = async () => {
+            let url = 'http://localhost:3000/jeux';
+            
+            if (isEdition) {
+                url += `/${id}`;
+            }
+
+            try {
+
+                const newJeu = await jQuery.ajax({
+                    url,
+                    method: "POST",
+                    data: {
+                        titre,
+                        joueurs_min,
+                        joueurs_max,
+                        duree,
+                        age_recommande,
+                        mecanisme,
+                        mecanisme2,
+                        date_parution,
+                        editeur,
+                        commentaire,
+                        appartient,
+                    }
+                });
+                if (isEdition) {
+                    listJeux.init();
+                    listMembreJeux.init(appartient);
+                } else {
+                    listJeux.importJeuxInTable([newJeu]);
+                }
+                edition.hideFormJeu();
+            } catch (error) {
+                console.log("Something went wrong!")
+                console.error(error);
+            }
         }
-        edition.hideFormJeu();
-    } catch (error) {
-        console.log("Something went wrong!")
-        console.error(error);
+        edition.saveJeu();
     }
 }

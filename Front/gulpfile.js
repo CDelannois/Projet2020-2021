@@ -15,6 +15,8 @@ gulp.task('vendor-js', () => {
     return gulp.src([
             'node_modules/jquery/dist/jquery.min.js',
             'node_modules/bootstrap/dist/js/bootstrap.min.js',
+            'node_modules/moment/moment.js',
+            'node_modules/validator/validator.min.js'
         ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest('dist/js/'));
@@ -25,6 +27,7 @@ gulp.task('app-js', () => {
             'js/list.js',
             'js/edition.js',
             'js/display.js',
+            'js/verification.js',
         ])
         .pipe(concat('app.js'))
         .pipe(gulp.dest('dist/js/'));
