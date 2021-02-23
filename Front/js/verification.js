@@ -17,10 +17,8 @@ verification.verificationNom = (e) => {
 
     let nom = $('#nom')[0].value;
     let erreurAlphaNom = $('#erreur-alpha-nom')[0];
-    let erreurEmptyNom = $('#erreur-empty-nom')[0];
     let erreurLengthNom = $('#erreur-length-nom')[0];
     let alphaNom = false;
-    let emptyNom = true;
     let lengthNom = false;
 
     if (!validator.isAlpha(nom, "fr-FR")) {
@@ -31,14 +29,6 @@ verification.verificationNom = (e) => {
         alphaNom = true;
     };
 
-    if (validator.isEmpty(nom)) {
-        erreurEmptyNom.textContent = "Ce champ doit être rempli.";
-        emptyNom = true;
-    } else {
-        erreurEmptyNom.textContent = "";
-        emptyNom = false;
-    };
-
     if (!validator.isLength(nom, { min: 2, max: 45 })) {
         erreurLengthNom.textContent = "Le nom doit comporter au moins deux caractères et maximum 45 caractères!";
         lengthNom = false;
@@ -47,7 +37,7 @@ verification.verificationNom = (e) => {
         lengthNom = true;
     };
 
-    if (alphaNom === false || emptyNom === true || lengthNom === false) { //Si chaque condition est remplie, la variable globale nomOk devient true.
+    if (alphaNom === false || lengthNom === false) { //Si chaque condition est remplie, la variable globale nomOk devient true.
         nomOk = false;
     } else {
         nomOk = true;
@@ -60,10 +50,8 @@ verification.verificationPrenom = (e) => {
 
     let prenom = $('#prenom')[0].value;
     let erreurAlphaPrenom = $('#erreur-alpha-prenom')[0];
-    let erreurEmptyPrenom = $('#erreur-empty-prenom')[0];
     let erreurLengthPrenom = $('#erreur-length-prenom')[0];
     let alphaPrenom = false;
-    let emptyPrenom = true;
     let lengthPrenom = false;
 
 
@@ -75,14 +63,6 @@ verification.verificationPrenom = (e) => {
         alphaPrenom = true;
     };
 
-    if (validator.isEmpty(prenom)) {
-        erreurEmptyPrenom.textContent = "Ce champ doit être rempli.";
-        emptyPrenom = true;
-    } else {
-        erreurEmptyPrenom.textContent = "";
-        emptyPrenom = false;
-    };
-
     if (!validator.isLength(prenom, { min: 2, max: 45 })) {
         erreurLengthPrenom.textContent = "Le prénom doit comporter au moins deux caractères et maximum 45 caractères!";
         lengthPrenom = false;
@@ -91,7 +71,7 @@ verification.verificationPrenom = (e) => {
         lengthPrenom = true;
     };
 
-    if (alphaPrenom === false || emptyPrenom === true || lengthPrenom === false) {
+    if (alphaPrenom === false || lengthPrenom === false) {
         prenomOk = false;
     } else {
         prenomOk = true;
@@ -103,10 +83,8 @@ $('#prenom').keyup(verification.verificationPrenom);
 verification.verificationTelephone = (e) => {
     let telephone = $('#telephone')[0].value;
     let erreurIntTelephone = $('#erreur-int-telephone')[0];
-    let erreurEmptyTelephone = $('#erreur-empty-telephone')[0];
     let erreurLengthTelephone = $('#erreur-length-telephone')[0];
     let intTelephone = false;
-    let emptyTelephone = true;
     let lengthTelephone = false;
 
     if (!validator.isInt(telephone)) {
@@ -117,14 +95,6 @@ verification.verificationTelephone = (e) => {
         intTelephone = true;
     };
 
-    if (validator.isEmpty(telephone)) {
-        erreurEmptyTelephone.textContent = "Ce champ doit être rempli.";
-        emptyTelephone = true;
-    } else {
-        erreurEmptyTelephone.textContent = "";
-        emptyTelephone = false;
-    };
-
     if (!validator.isLength(telephone, { min: 9, max: 45 })) {
         erreurLengthTelephone.textContent = "Le numéro de téléphone doit comporter au moins neuf caractères et maximum 45 caractères!";
         lengthTelephone = false;
@@ -133,7 +103,7 @@ verification.verificationTelephone = (e) => {
         lengthTelephone = true;
     };
 
-    if (intTelephone === false || emptyTelephone === true || lengthTelephone === false) {
+    if (intTelephone === false || lengthTelephone === false) {
         telephoneOk = false;
     } else {
         telephoneOk = true;
@@ -147,10 +117,8 @@ verification.verificationEmail = (e) => {
 
     let email = $('#email')[0].value;
     let erreurIsEmail = $('#erreur-is-email')[0];
-    let erreurEmptyEmail = $('#erreur-empty-email')[0];
     let erreurLengthEmail = $('#erreur-length-email')[0];
     let isEmail = false;
-    let emptyEmail = true;
     let lengthEmail = false;
 
     if (!validator.isEmail(email)) {
@@ -161,14 +129,6 @@ verification.verificationEmail = (e) => {
         isEmail = true;
     };
 
-    if (validator.isEmpty(email)) {
-        erreurEmptyEmail.textContent = "Ce champ doit être rempli.";
-        emptyEmail = true;
-    } else {
-        erreurEmptyEmail.textContent = "";
-        emptyEmail = false;
-    };
-
     if (!validator.isLength(email, { min: undefined, max: 45 })) {
         erreurLengthEmail.textContent = "Ce champ peut comporter au maximum 45 caractères!";
         lengthEmail = false;
@@ -177,7 +137,7 @@ verification.verificationEmail = (e) => {
         lengthEmail = true;
     };
 
-    if (isEmail === false || emptyEmail === true || lengthEmail === false) {
+    if (isEmail === false || lengthEmail === false) {
         emailOk = false;
     } else {
         emailOk = true;
@@ -191,10 +151,8 @@ verification.verificationAdresse = (e) => {
 
     let adresse = $('#adresse')[0].value;
     let erreurAlphaAdresse = $('#erreur-alpha-adresse')[0];
-    let erreurEmptyAdresse = $('#erreur-empty-adresse')[0];
     let erreurLengthAdresse = $('#erreur-length-adresse')[0];
     let alphaAdresse = false;
-    let emptyAdresse = true;
     let lengthAdresse = false;
 
     if (!validator.isAlpha(adresse, 'fr-FR', { ignore: " 123456789+" })) {
@@ -205,14 +163,6 @@ verification.verificationAdresse = (e) => {
         alphaAdresse = true;
     };
 
-    if (validator.isEmpty(adresse)) {
-        erreurEmptyAdresse.textContent = "Ce champ doit être rempli.";
-        emptyAdresse = true;
-    } else {
-        erreurEmptyAdresse.textContent = "";
-        emptyAdresse = false;
-    };
-
     if (!validator.isLength(adresse, { min: 10, max: 200 })) {
         erreurLengthAdresse.textContent = "Ce champ doit comporter entre 10 et 200 caractères!";
         lengthAdresse = false;
@@ -221,7 +171,7 @@ verification.verificationAdresse = (e) => {
         lengthAdresse = true;
     };
 
-    if (alphaAdresse === false || emptyAdresse === true || lengthAdresse === false) {
+    if (alphaAdresse === false || lengthAdresse === false) {
         adresseOk = false;
     } else {
         adresseOk = true;
@@ -275,24 +225,16 @@ $('#date_naissance').change(verification.unlockButton);
 verification.verificationJeux = (e) => {
 
     validator.isLength(titre, { min: 0, max: 45 });
-    validator.isEmpty(titre);
     validator.isInt(joueurs_max);
-    validator.isEmpty(joueurs_max);
     validator.isInt(joueurs_min, { min: 1, max: joueurs_max });
-    validator.isEmpty(joueurs_min);
     validator.isInt(duree, { min: 1, max: undefined });
-    validator.isEmpty(duree);
     validator.isInt(age_recommande, { min: 1, max: 99 });
-    validator.isEmpty(age_recommande);
     validator.isLength(mecanisme, { min: 0, max: 45 });
-    validator.isEmpty(mecanisme);
     validator.isAlpha(mecanisme, 'fr-FR', { ignore: " " });
     validator.isLength(mecanisme2, { min: 0, max: 45 });
     validator.isAlpha(mecanisme2, 'fr-FR', " ");
     validator.isBefore(date_parution, '');
-    validator.isEmpty(date_parution);
     validator.isLength(editeur, { min: 0, max: 45 });
-    validator.isEmpty(editeur);
     validator.isLength(commentaire, { min: 0, max: 200 });
 }
 //Commentaire sur le jeu, affichage du nombre de caractères restant.
