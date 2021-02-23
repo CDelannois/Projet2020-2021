@@ -22,27 +22,11 @@ listMembre.getMembre = () => {
         })
 };
 
-listMembre.countMembre = (membreId) => {
-    return jQuery
-        .ajax({
-            url: `http://localhost:3000/membreCount/${membreId}`,
-            method: "GET",
-        })
-        .catch((error) => {
-            console.error(error);
-            alert('Une erreur est survenue. Impossible de compter le nombre de jeux.')
-        });
-};
-
-//Confirmation de la suppression
+//Confirmation de la suppression POUR VALIDER RECUPERER LA LONGUEUR DE LA LISTE DE JEUX D'UN MEMBRE
 listMembre.confirmRemoveMembre = async (membreId) => {
-    /*listMembre.countJeuxMembre = await listMembre.countMembre(membreId);
-    let count;
-    listMembre.countJeuxMembre.map((countJeux) => {
-        count = countJeux.count;
-    })
-    console.log(count);*/
-    if (listMembre.count > 0) {
+    let count = await listMembre.countMembre(membreId);;
+    console.log(count);
+    if (count > 0) {
         console.log('On ne peut pas supprimer ce membre!');
     };
     listMembre.membreToRemove = membreId;
