@@ -20,9 +20,7 @@
           onclick="edition.hideFormMembre()">Annuler</button>
         <button class="btn btn-danger" id="button-cancel-edit-jeu" onclick="edition.hideFormJeu()">Annuler</button>
         <button class="btn btn-info" id="button-display-jeux" onclick="display.showJeux()">Jeux</button>
-        <!--Le bouton ne doit apparaitre que quand on affiche les membres-->
         <button class="btn btn-info" id="button-display-membre" onclick="display.showMembre()">Membres</button>
-        <!--Le bouton ne doit apparaitre que quand on affiche les jeux-->
     </div>
   </div>
 </div>
@@ -38,32 +36,60 @@
       <div class="card-body">
         <form>
           <input type="hidden" name="id_membre" id="id_membre" required>
+
           <div class="form-group">
             <label for="nom">Nom</label>
-            <input type="text" class="form-control" id="nom" placeholder="Nom du nouveau membre" required>
+            <input type="text" class="form-control" id="nom" maxlength="45" placeholder="Nom du nouveau membre"
+              required>
+            <div id="erreur-alpha-nom"></div>
+            <div id="erreur-empty-nom"></div>
+            <div id="erreur-length-nom"></div>
           </div>
+
           <div class="form-group">
             <label for="prenom">Prénom</label>
-            <input type="text" class="form-control" id="prenom" placeholder="Prénom du nouveau membre" required>
+            <input type="text" class="form-control" id="prenom" maxlength="45" placeholder="Prénom du nouveau membre"
+              required>
+            <div id="erreur-alpha-prenom"></div>
+            <div id="erreur-empty-prenom"></div>
+            <div id="erreur-length-prenom"></div>
           </div>
+
           <div class="form-group">
             <label for="telephone">Numéro de téléphone</label>
-            <input type="text" class="form-control" id="telephone" placeholder="Numéro de téléphone du nouveau membre"
-              required>
+            <input type="text" class="form-control" id="telephone" maxlength="45"
+              placeholder="Numéro de téléphone du nouveau membre" required>
+            <div id="erreur-int-telephone"></div>
+            <div id="erreur-empty-telephone"></div>
+            <div id="erreur-length-telephone"></div>
           </div>
+
           <div class="form-group">
             <label for="email">Adresse mail</label>
-            <input type="email" class="form-control" id="email" placeholder="Adresse mail du nouveau membre" required>
+            <input type="email" class="form-control" id="email" maxlength="45"
+              placeholder="Adresse mail du nouveau membre" required>
+            <div id="erreur-is-email"></div>
+            <div id="erreur-empty-email"></div>
+            <div id="erreur-length-email"></div>
           </div>
+
           <div class="form-group">
             <label for="adresse">Adresse (numéro, rue et ville)</label>
-            <input type="text" class="form-control" id="adresse" placeholder="Numéro, rue et ville" required>
+            <input type="text" class="form-control" id="adresse" maxlength="200" placeholder="Numéro, rue et ville"
+              required>
+            <div id="erreur-alpha-adresse"></div>
+            <div id="erreur-empty-adresse"></div>
+            <div id="erreur-length-adresse"></div>
           </div>
+
           <div class="form-group">
             <label for="date_naissance">Date de naissance</label>
             <input type="date" class="form-control" id="date_naissance" required>
+            <div id="erreur-date-naissance"></div>
           </div>
-          <button type="submit" onclick="edition.saveMembre(event)" class="btn btn-primary">Envoyer</button>
+
+          <button type="submit" id="saveMembre" onclick="edition.saveMembre(event)"
+            class="btn btn-primary">Envoyer</button>
         </form>
       </div>
     </div>
@@ -80,54 +106,86 @@
       <div class="card-body">
         <form>
           <input type="hidden" name="id_jeux" id="id_jeux" required>
+
           <div class="form-group">
             <label for="titre">Titre</label>
-            <input type="text" class="form-control" id="titre" placeholder="Titre du nouveau jeu">
+            <input type="text" class="form-control" id="titre" maxlength="45" placeholder="Titre du nouveau jeu">
+            <div id="erreur-empty-titre"></div>
+            <div id="erreur-length-titre"></div>
           </div>
+
           <div class="form-group">
             <label for="joueurs_min">Nombre minimum de joueurs</label>
             <input type="text" class="form-control" id="joueurs_min" required>
+            <div id="erreur-int-min"></div>
+            <div id="erreur-empty-min"></div>
+            <div id="erreur-big-min"></div>
           </div>
+
           <div class="form-group">
             <label for="joueurs_max">Nombre maximum de joueurs</label>
             <input type="text" class="form-control" id="joueurs_max" required>
+            <div id="erreur-int-max"></div>
+            <div id="erreur-empty-max"></div>
           </div>
+
           <div class="form-group">
             <label for="duree">Durée moyenne du jeu en minutes</label>
             <input type="text" class="form-control" id="duree" placeholder="En minutes">
+            <div id="erreur-int-duree"></div>
+            <div id="erreur-empty-duree"></div>
           </div>
+
           <div class="form-group">
             <label for="age_recommande">Age recommandé pour jouer</label>
             <input type="text" class="form-control" id="age_recommande">
+            <div id="erreur-int-age"></div>
+            <div id="erreur-empty-age"></div>
           </div>
+
           <div class="form-group">
             <label for="mecanisme">Mecanisme principal du jeu</label>
-            <input type="text" class="form-control" id="mecanisme" placeholder="Exemple: draft">
+            <input type="text" class="form-control" id="mecanisme" maxlength="45" placeholder="Exemple: draft">
+            <div id="erreur-alpha-mecanisme"></div>
+            <div id="erreur-empty-mecanisme"></div>
+            <div id="erreur-length-mecanisme"></div>
           </div>
+
           <div class="form-group">
             <label for="mecanisme2">Mecanisme secondaire du jeu (facultatif)</label>
-            <input type="text" class="form-control" id="mecanisme2" placeholder="Exemple: bluff">
+            <input type="text" class="form-control" id="mecanisme2" maxlength="45" placeholder="Exemple: bluff">
+            <div id="erreur-alpha-mecanisme2"></div>
+            <div id="erreur-length-mecanisme2"></div>
           </div>
+
           <div class="form-group">
             <label for="date_parution">Date de la parution du jeu</label>
             <input type="date" class="form-control" id="date_parution">
+            <div id="erreur-date-parution"></div>
           </div>
+
           <div class="form-group">
             <label for="editeur">Editeur</label>
-            <input type="text" class="form-control" id="editeur" placeholder="Exemple: Iello">
+            <input type="text" class="form-control" id="editeur" maxlength="45" placeholder="Exemple: Iello">
+            <div id="erreur-empty-editeur"></div>
+            <div id="erreur-length-editeur"></div>
           </div>
+
           <div class="form-group">
             <label for="commentaire">Commentaire sur l'état du jeu (facultatif)</label>
-            <textarea class="form-control" id="commentaire"></textarea>
+            <textarea class="form-control" id="commentaire" maxlength="200"></textarea>
             <div id="caracteresRestant">200 caractères maximum</div>
+            <div id="erreur-commentaire"></div>
           </div>
+
           <div class="form-group">
             <label for="appartient">Membre</label>
             <select id="jeuAppartient" name="jeuAppartient" class="form-control">
 
             </select>
           </div>
-          <button type="submit" onclick="edition.verificationSaveJeu(event)" class="btn btn-primary">Envoyer</button>
+
+          <button type="submit" onclick="edition.saveJeu(event)" class="btn btn-primary">Envoyer</button>
         </form>
       </div>
     </div>
@@ -166,7 +224,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Suppression d'un membre</h5>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="impossible">
           Voulez-vous vraiment supprimer ce membre?
         </div>
         <div class="modal-footer">
@@ -252,23 +310,6 @@
 
         </tbody>
       </table>
-    </div>
-  </div>
-
-  <!--Modal d'erreur-->
-  <div class="modal" id="error-modal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Erreur</h5>
-        </div>
-        <div class="modal-body" id="error-message">
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="corriger">Corriger</button>
-        </div>
-      </div>
     </div>
   </div>
 

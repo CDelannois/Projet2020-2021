@@ -6,6 +6,7 @@ const browserSync = require('browser-sync').create();
 gulp.task('vendor-css', () => {
     return gulp.src([
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
+            'node_modules/bootstrap/dist/css/bootstrap.min.css.map'
         ])
         .pipe(concat('vendor.css'))
         .pipe(gulp.dest('dist/css/'));

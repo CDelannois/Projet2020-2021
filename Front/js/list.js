@@ -1,5 +1,3 @@
-// Adapter les dates avec https://www.npmjs.com/package/moment
-
 //_________________________________________________________________________________MEMBRES______________________________________________________________________________________________
 
 
@@ -24,8 +22,29 @@ listMembre.getMembre = () => {
         })
 };
 
+listMembre.countMembre = (membreId) => {
+    return jQuery
+        .ajax({
+            url: `http://localhost:3000/membreCount/${membreId}`,
+            method: "GET",
+        })
+        .catch((error) => {
+            console.error(error);
+            alert('Une erreur est survenue. Impossible de compter le nombre de jeux.')
+        });
+};
+
 //Confirmation de la suppression
-listMembre.confirmRemoveMembre = (membreId) => {
+listMembre.confirmRemoveMembre = async (membreId) => {
+    /*listMembre.countJeuxMembre = await listMembre.countMembre(membreId);
+    let count;
+    listMembre.countJeuxMembre.map((countJeux) => {
+        count = countJeux.count;
+    })
+    console.log(count);*/
+    if (listMembre.count > 0) {
+        console.log('On ne peut pas supprimer ce membre!');
+    };
     listMembre.membreToRemove = membreId;
     jQuery('#remove-membre-modal').modal('toggle');
 }
@@ -42,7 +61,7 @@ listMembre.remove = async () => {
         jQuery(`[data-id="${membreId}"]`).fadeOut('slow');
     } catch (error) {
         console.error(error);
-        alert('Une erreur est survenue. Impossible de supprimer le membre.'); // Récupérer le code SQL et faire un message qui précise qu'on ne peut pas supprimer un membre qui possède encore des jeux.
+        alert('Une erreur est survenue. Impossible de supprimer le membre.');
     } finally {
         jQuery("#remove-membre-modal").modal('hide');
     }

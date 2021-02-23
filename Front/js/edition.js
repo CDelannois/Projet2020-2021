@@ -1,5 +1,7 @@
 const edition = {};
 
+//_________________________________________________________________________________MEMBRES______________________________________________________________________________________________
+
 //Afficher le formulaire pour ajouter un membre
 edition.showFormMembre = (membreID) => {
     //si on a un ID, on appelle populate
@@ -48,6 +50,22 @@ edition.cleanFormMembre = () => {
     jQuery('#email').val('');
     jQuery('#adresse').val('');
     jQuery('#date_naissance').val('');
+    $('#erreur-alpha-nom')[0].textContent = "";
+    $('#erreur-empty-nom')[0].textContent = "";
+    $('#erreur-length-nom')[0].textContent = "";
+    $('#erreur-alpha-prenom')[0].textContent = "";
+    $('#erreur-empty-prenom')[0].textContent = "";
+    $('#erreur-length-prenom')[0].textContent = "";
+    $('#erreur-int-telephone')[0].textContent = "";
+    $('#erreur-empty-telephone')[0].textContent = "";
+    $('#erreur-length-telephone')[0].textContent = "";
+    $('#erreur-is-email')[0].textContent = "";
+    $('#erreur-empty-email')[0].textContent = "";
+    $('#erreur-length-email')[0].textContent = "";
+    $('#erreur-alpha-adresse')[0].textContent = "";
+    $('#erreur-empty-adresse')[0].textContent = "";
+    $('#erreur-length-adresse')[0].textContent = "";
+    $('#erreur-date-naissance')[0].textContent = "";
 }
 
 //Valider l'enregistrement d'un membre
@@ -94,7 +112,6 @@ edition.saveMembre = async (event) => {
     }
 }
 
-//
 edition.membres = [];
 
 edition.init = async () => {
@@ -113,6 +130,8 @@ edition.getMembres = () => {
             return [];
         })
 };
+
+//_________________________________________________________________________________JEUX______________________________________________________________________________________________
 
 //Afficher le formulaire pour ajouter un jeu
 edition.showFormJeu = (jeuID) => {
@@ -189,11 +208,10 @@ edition.cleanFormJeu = () => {
     jQuery('#editeur').val('');
     jQuery('#commentaire').val('');
     jQuery('#jeuAppartient').val();
+
 }
 
-//Valider l'enregistrement d'un jeu
-edition.verificationSaveJeu = (event) => {
-    event.preventDefault(); //Arrêter l'exécution de l'envoi
+edition.saveJeu = async () => {
 
     const id = jQuery('#id_jeux').val();
     const isEdition = id.length > 0;
@@ -209,54 +227,43 @@ edition.verificationSaveJeu = (event) => {
     const commentaire = jQuery('#commentaire').val();
     const appartient = jQuery('#jeuAppartient').val();
 
-    if (joueurs_min > joueurs_max) {
+    event.preventDefault(); //Arrêter l'exécution de l'envoi
 
-        $('#corriger').click(() => {
-            console.log("Le jeu à modifier est le jeu n° " + id);
-            edition.showFormJeu(id); //Ne fonctionne pas correctement!
+
+    let url = 'http://localhost:3000/jeux';
+
+    if (isEdition) {
+        url += `/${id}`;
+    }
+
+    try {
+
+        const newJeu = await jQuery.ajax({
+            url,
+            method: "POST",
+            data: {
+                titre,
+                joueurs_min,
+                joueurs_max,
+                duree,
+                age_recommande,
+                mecanisme,
+                mecanisme2,
+                date_parution,
+                editeur,
+                commentaire,
+                appartient,
+            }
         });
-        let message = $('#error-message')[0];
-        message.textContent = 'Le nombre de joueurs minimum est plus grand que le nombre de joueurs maximum!';
-        jQuery('#error-modal').modal('toggle');
-    } else {
-        edition.saveJeu = async () => {
-            let url = 'http://localhost:3000/jeux';
-            
-            if (isEdition) {
-                url += `/${id}`;
-            }
-
-            try {
-
-                const newJeu = await jQuery.ajax({
-                    url,
-                    method: "POST",
-                    data: {
-                        titre,
-                        joueurs_min,
-                        joueurs_max,
-                        duree,
-                        age_recommande,
-                        mecanisme,
-                        mecanisme2,
-                        date_parution,
-                        editeur,
-                        commentaire,
-                        appartient,
-                    }
-                });
-                if (isEdition) {
-                    listJeux.init();
-                    listMembreJeux.init(appartient);
-                } else {
-                    listJeux.importJeuxInTable([newJeu]);
-                }
-                edition.hideFormJeu();
-            } catch (error) {
-                console.log("Something went wrong!")
-                console.error(error);
-            }
+        if (isEdition) {
+            listJeux.init();
+            listMembreJeux.init(appartient);
+        } else {
+            listJeux.importJeuxInTable([newJeu]);
         }
-        edition.saveJeu();
+        edition.hideFormJeu();
+    } catch (error) {
+        console.log("Something went wrong!")
+        console.error(error);
     }
 }

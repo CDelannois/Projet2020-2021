@@ -1,4 +1,5 @@
 module.exports = (app, queryPromise) => {
+
     // Récupération de tous les membres
     app.get("/membre", async (req, res) => {
         try {
@@ -98,7 +99,7 @@ module.exports = (app, queryPromise) => {
         }
     });
 
-    //Suppression d'un jeu
+    //Suppression d'un membre
     app.delete("/membre/:id", async (req, res) => {
         const id = req.params.id;
         try {
@@ -115,7 +116,22 @@ module.exports = (app, queryPromise) => {
         } catch (e) {
             return res.status(400).json({
                 error: e
+            });
+        }
+    });
+
+    //Nom de jeux que possède un membre
+    app.get("/membreCount/:id", async (req, res) => {
+        const id=req.params.id;
+        try{
+            const count = await queryPromise("SELECT COUNT(*) as 'count' FROM membre JOIN jeux ON id_membre=appartient WHERE id_membre=?",[id]);
+            return res.status(200).json({
+                ok: count
             })
+        } catch (e) {
+            return res.status(400).json({
+                error: e
+            });
         }
     });
 }
