@@ -24,11 +24,11 @@ listMembre.getMembre = () => {
 
 //Confirmation de la suppression POUR VALIDER RECUPERER LA LONGUEUR DE LA LISTE DE JEUX D'UN MEMBRE
 listMembre.confirmRemoveMembre = async (membreId) => {
-    let count = await listMembre.countMembre(membreId);;
+    /*let count = await listMembre.countMembre(membreId);;
     console.log(count);
     if (count > 0) {
         console.log('On ne peut pas supprimer ce membre!');
-    };
+    };*/
     listMembre.membreToRemove = membreId;
     jQuery('#remove-membre-modal').modal('toggle');
 }

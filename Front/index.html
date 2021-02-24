@@ -112,13 +112,14 @@
             <label for="joueurs_min">Nombre minimum de joueurs</label>
             <input type="text" class="form-control" id="joueurs_min" required>
             <div id="erreur-int-min"></div>
-            <div id="erreur-big-min"></div>
+            <div id="erreur-value-min"></div>
           </div>
 
           <div class="form-group">
             <label for="joueurs_max">Nombre maximum de joueurs</label>
             <input type="text" class="form-control" id="joueurs_max" required>
             <div id="erreur-int-max"></div>
+            <div id="erreur-value-max"></div>
           </div>
 
           <div class="form-group">
@@ -163,7 +164,7 @@
             <label for="commentaire">Commentaire sur l'état du jeu (facultatif)</label>
             <textarea class="form-control" id="commentaire" maxlength="200"></textarea>
             <div id="caracteresRestant">200 caractères maximum</div>
-            <div id="erreur-commentaire"></div>
+            <div id="erreur-length-commentaire"></div>
           </div>
 
           <div class="form-group">
@@ -173,7 +174,7 @@
             </select>
           </div>
 
-          <button type="submit" onclick="edition.saveJeu(event)" class="btn btn-primary">Envoyer</button>
+          <button type="submit" id="saveJeu" onclick="edition.saveJeu(event)" class="btn btn-primary">Envoyer</button>
         </form>
       </div>
     </div>

@@ -155,7 +155,7 @@ verification.verificationAdresse = (e) => {
     let alphaAdresse = false;
     let lengthAdresse = false;
 
-    if (!validator.isAlpha(adresse, 'fr-FR', { ignore: " 123456789+" })) {
+    if (!validator.isAlpha(adresse, 'fr-FR', { ignore: " 0123456789+" })) {
         erreurAlphaAdresse.textContent = "Ce champ ne peut pas comporter de caractères spéciaux!";
         alphaAdresse = false;
     } else {
@@ -206,37 +206,345 @@ verification.verificationDateNaissance = (e) => {
 $('#date_naissance').change(verification.verificationDateNaissance);
 
 //Déblocage du bouton
-verification.unlockButton = (e) => {
-    if (nomOk === true && prenomOk === true && telephoneOk === true && emailOk === true && adresseOk === true && dateNaissanceOk === true) {
+verification.unlockButtonMembre = (e) => {
+    if (nomOk === true &&
+        prenomOk === true &&
+        telephoneOk === true &&
+        emailOk === true &&
+        adresseOk === true &&
+        dateNaissanceOk === true) {
         $('#saveMembre').prop("disabled", false);
     } else {
         $('#saveMembre').prop("disabled", true);
     }
 }
-$('#nom').keyup(verification.unlockButton);
-$('#prenom').keyup(verification.unlockButton);
-$('#telephone').keyup(verification.unlockButton);
-$('#email').keyup(verification.unlockButton);
-$('#adresse').keyup(verification.unlockButton);
-$('#date_naissance').change(verification.unlockButton);
+$('#nom').keyup(verification.unlockButtonMembre);
+$('#prenom').keyup(verification.unlockButtonMembre);
+$('#telephone').keyup(verification.unlockButtonMembre);
+$('#email').keyup(verification.unlockButtonMembre);
+$('#adresse').keyup(verification.unlockButtonMembre);
+$('#date_naissance').change(verification.unlockButtonMembre);
 
 //_________________________________________________________________________________JEUX______________________________________________________________________________________________
 
-verification.verificationJeux = (e) => {
+$('#saveJeu').prop("disabled", true);
+let titreOk = false;
+let joueursMaxOk = false;
+let joueursMinOk = false;
+let dureeOk = false;
+let ageRecommandeOk = false;
+let mecanismeOk = false;
+let mecanisme2Ok = true;//facultatif, peut être vide, set sur false si une erreur est entrée
+let dateParutionOk = false;
+let editeurOk = false;
+let commentaireOk = true;//facultatif, peut être vide, set sur false si une erreur est entrée
 
-    validator.isLength(titre, { min: 0, max: 45 });
-    validator.isInt(joueurs_max);
-    validator.isInt(joueurs_min, { min: 1, max: joueurs_max });
-    validator.isInt(duree, { min: 1, max: undefined });
-    validator.isInt(age_recommande, { min: 1, max: 99 });
-    validator.isLength(mecanisme, { min: 0, max: 45 });
-    validator.isAlpha(mecanisme, 'fr-FR', { ignore: " " });
-    validator.isLength(mecanisme2, { min: 0, max: 45 });
-    validator.isAlpha(mecanisme2, 'fr-FR', " ");
-    validator.isBefore(date_parution, '');
-    validator.isLength(editeur, { min: 0, max: 45 });
-    validator.isLength(commentaire, { min: 0, max: 200 });
+verification.verificationTitre = (e) => {
+
+    //Champ titre
+    let titre = $('#titre')[0].value;
+    let erreurLengthTitre = $('#erreur-length-titre')[0];
+    let lengthTitre = false;
+
+    if (!validator.isLength(titre, { min: 1, max: 45 })) {
+        erreurLengthTitre.textContent = "Ce champ doit comporter entre 1 et 45 caractères.";
+        lengthTitre = false;
+    } else {
+        erreurLengthTitre.textContent = "";
+        lengthTitre = true;
+    };
+
+    if (lengthTitre == false) {
+        titreOk = false;
+    } else {
+        titreOk = true;
+    }
 }
+
+$('#titre').keyup(verification.verificationTitre);
+
+//Champ joueurs_min
+verification.verificationJoueursMin = (e) => {
+    let joueursMin = $('#joueurs_min')[0].value;
+    let erreurIntMin = $('#erreur-int-min')[0];
+    let erreurValueMin = $('#erreur-value-min')[0];
+    let intMin = false;
+    let valueMin = false;
+
+    if (!validator.isInt(joueursMin)) {
+        erreurIntMin.textContent = "Ce champ ne peut comporter que des chiffres.";
+        intMin = false;
+    } else {
+        erreurIntMin.textContent = "";
+        intMin = true;
+    }
+
+    if (!validator.isInt(joueursMin, { min: 1, max: $('#joueurs_max')[0].value })) {
+        erreurValueMin.textContent = "La valeur doit être comprise entre 1 et le nombre maximum de joueurs.";
+        valueMin = false;
+    } else {
+        erreurValueMin.textContent = "";
+        valueMin = true;
+    }
+
+    if (intMin == false || valueMin == false) {
+        joueursMaxOk = false;
+    } else {
+        joueursMaxOk = true;
+    }
+}
+$('#joueurs_min').keyup(verification.verificationJoueursMin);
+$('#joueurs_max').keyup(verification.verificationJoueursMin);
+
+//Champ joueurs_max
+verification.verificationJoueursMax = (e) => {
+    let joueursMax = $('#joueurs_max')[0].value;
+    let erreurIntMax = $('#erreur-int-max')[0];
+    let erreurValueMax = $('#erreur-value-max')[0];
+    let intMax = false;
+    let valueMax = false;
+
+    if (!validator.isInt(joueursMax)) {
+        erreurIntMax.textContent = "Ce champ ne peut comporter que des chiffres.";
+        intMax = false;
+    } else {
+        erreurIntMax.textContent = "";
+        intMax = true;
+    }
+
+    if (!validator.isInt(joueursMax, { min: $('#joueurs_min')[0].value, max: 1000 })) {
+        erreurValueMax.textContent = "La valeur doit être supérieur à celle du nombre minimum de joueurs.";
+        valueMax = false;
+    } else {
+        erreurValueMax.textContent = "";
+        valueMax = true;
+    }
+
+    if (erreurIntMax == false || valueMax == false) {
+        joueursMinOk = false;
+    } else {
+        joueursMinOk = true;
+    }
+}
+
+$('#joueurs_min').keyup(verification.verificationJoueursMax);
+$('#joueurs_max').keyup(verification.verificationJoueursMax);
+
+
+//Champ durée
+verification.verificationDuree = (e) => {
+    let duree = $('#duree')[0].value;
+    let erreurIntDuree = $('#erreur-int-duree')[0];
+    let intDuree = false;
+
+    if (!validator.isInt(duree, { min: 1 })) {
+        erreurIntDuree.textContent = "Ce champ doit être rempli avec un nombre supérieur à 0.";
+        intDuree = false;
+    } else {
+        erreurIntDuree.textContent = "";
+        intDuree = true;
+    }
+
+    if (intDuree == false) {
+        dureeOk = false;
+    } else {
+        dureeOk = true;
+    }
+}
+$('#duree').keyup(verification.verificationDuree);
+
+//Champ âge recommandé
+verification.verificationAge = (e) => {
+    let ageRecommande = $('#age_recommande')[0].value;
+    let erreurIntAgeRecommande = $('#erreur-int-age')[0];
+    let intAgeRecommande = false;
+
+    if (!validator.isInt(ageRecommande, { min: 3 })) {
+        erreurIntAgeRecommande.textContent = "Ce champ doit être rempli avec un nombre égal ou supérieur à 3.";
+        intAgeRecommande = false;
+    } else {
+        erreurIntAgeRecommande.textContent = "";
+        intAgeRecommande = true;
+    }
+
+    if (intAgeRecommande = false) {
+        ageRecommandeOk = false;
+    } else {
+        ageRecommandeOk = true;
+    }
+}
+$('#age_recommande').keyup(verification.verificationAge);
+
+//Champ mécanisme
+verification.verificationMecanisme = (e) => {
+    let mecanisme = $('#mecanisme')[0].value;
+    let erreurAlphaMecanisme = $('#erreur-alpha-mecanisme')[0];
+    let erreurLengthMecanisme = $('#erreur-length-mecanisme')[0];
+    let alphaMecanisme = false;
+    let lengthMecanisme = false;
+
+
+    if (!validator.isAlpha(mecanisme, "fr-FR", { ignore: " -" })) {
+        erreurAlphaMecanisme.textContent = "Ce champs ne peut contenir que des lettres, espaces ou traits d'union.";
+        alphaMecanisme = false;
+    } else {
+        erreurAlphaMecanisme.textContent = "";
+        alphaMecanisme = true;
+    }
+
+    if (!validator.isLength(mecanisme, { min: 4, max: 45 })) {
+        erreurLengthMecanisme.textContent = "Ce champs doit contenir entre 4 et 45 caractères.";
+        lengthMecanisme = false;
+    } else {
+        erreurLengthMecanisme.textContent = "";
+        lengthMecanisme = true;
+    }
+
+    if (alphaMecanisme == false || lengthMecanisme == false) {
+        mecanismeOk = false;
+    } else {
+        mecanismeOk = true;
+    }
+}
+
+$('#mecanisme').keyup(verification.verificationMecanisme);
+
+//Champ mécanisme secondaire
+verification.verificationMecanisme2 = (e) => {
+    let mecanisme2 = $('#mecanisme2')[0].value;
+    let erreurAlphaMecanisme2 = $('#erreur-alpha-mecanisme2')[0];
+    let erreurLengthMecanisme2 = $('#erreur-length-mecanisme2')[0];
+    let alphaMecanisme2 = false;
+    let lengthMecanisme2 = false;
+
+    if (!validator.isEmpty(mecanisme2)) {
+        if (!validator.isAlpha(mecanisme2, "fr-FR", { ignore: " -" })) {
+            erreurAlphaMecanisme2.textContent = "Ce champ peut être vide ou ne peut contenir que des lettres, espace ou traits d'union.";
+            alphaMecanisme2 = false;
+        } else {
+            erreurAlphaMecanisme2.textContent = "";
+            alphaMecanisme2 = true;
+        }
+    } else {
+        erreurAlphaMecanisme2.textContent = "";
+        alphaMecanisme2 = true;
+    }
+
+    if (!validator.isLength(mecanisme2, { min: 0, max: 45 })) {
+        erreurLengthMecanisme2.textContent = "Ce champ peut contenir maximum 45 caractères.";
+        lengthMecanisme2 = false;
+    } else {
+        erreurLengthMecanisme2.textContent = "";
+        lengthMecanisme2 = true;
+    }
+
+    if (alphaMecanisme2 == false || lengthMecanisme2 == false) {
+        mecanisme2Ok == false;
+    } else {
+        mecanisme2Ok = true;
+    }
+}
+
+$('#mecanisme2').keyup(verification.verificationMecanisme2);
+
+//Champ date de parution
+verification.verificationDateParution = (e) => {
+    let today = new Date();
+    let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(); //Permet de récupérer la date du jour au format date.
+    let dateParution = $('#date_parution')[0].value;
+    let erreurBeforeDate = $('#erreur-date-parution')[0];
+    let beforeDate = false;
+
+    if (!validator.isBefore(dateParution, date)) {
+        erreurBeforeDate.textContent = "La date de parution ne peut pas dépasser la date actuelle.";
+        beforeDate = false;
+    } else {
+        erreurBeforeDate.textContent = "";
+        beforeDate = true;
+    }
+
+    if (beforeDate == false) {
+        dateParutionOk = false;
+    } else {
+        dateParutionOk = true;
+    }
+}
+$('#date_parution').change(verification.verificationDateParution);
+
+//Champ éditeur
+verification.verificationEditeur = (e) => {
+    let editeur = $('#editeur')[0].value;
+    let erreurLengthEditeur = $('#erreur-length-editeur')[0];
+    let lengthEditeur = false;
+
+    if (!validator.isLength(editeur, { min: 1, max: 45 })) {
+        erreurLengthEditeur.textContent = "Ce champ doit contenir entre 1 et 45 caractères.";
+        lengthEditeur = false;
+    } else {
+        erreurLengthEditeur.textContent = "";
+        lengthEditeur = true;
+    }
+
+    if (lengthEditeur = false) {
+        editeurOk = false;
+    } else {
+        editeurOk = true;
+    }
+}
+$('#editeur').keyup(verification.verificationEditeur);
+
+//Champ commentaire
+verification.verificationCommentaire = (e) => {
+    let commentaire = $('#commentaire')[0].value;
+    let erreurLengthCommentaire = $('#erreur-length-commentaire')[0];
+    let lengthCommentaire = false;
+
+    if (!validator.isLength(commentaire, { min: 0, max: 200 })) {
+        erreurLengthCommentaire.textContent = "Ce champ peut contenir maximum 200 caractères.";
+        lengthCommentaire = false;
+    } else {
+        erreurLengthCommentaire.textContent = "";
+        lengthCommentaire = true;
+    }
+
+    if (lengthCommentaire == false) {
+        commentaireOk = false;
+    } else {
+        commentaireOk = true;
+    }
+}
+
+$('#commentaire').keyup(verification.verificationCommentaire);
+
+verification.unlockButtonJeu = (e) => {
+    if (titreOk === true &&
+        joueursMinOk === true &&
+        joueursMaxOk === true &&
+        dureeOk === true &&
+        ageRecommandeOk === true &&
+        mecanismeOk === true &&
+        mecanisme2Ok === true &&
+        dateParutionOk === true &&
+        editeurOk === true &&
+        commentaireOk === true) {
+        $('#saveJeu').prop("disabled", false);
+    } else {
+        $('#saveJeu').prop("disabled", true);
+    }
+}
+
+$('#titre').keyup(verification.unlockButtonJeu);
+$('#joueurs_min').keyup(verification.unlockButtonJeu);
+$('#joueurs_max').keyup(verification.unlockButtonJeu);
+$('#duree').keyup(verification.unlockButtonJeu);
+$('#age_recommande').keyup(verification.unlockButtonJeu);
+$('#mecanisme').keyup(verification.unlockButtonJeu);
+$('#mecanisme2').keyup(verification.unlockButtonJeu);
+$('#date_parution').change(verification.unlockButtonJeu);
+$('#editeur').keyup(verification.unlockButtonJeu);
+$('#commentaire').keyup(verification.unlockButtonJeu);
+
+
 //Commentaire sur le jeu, affichage du nombre de caractères restant.
 let commentaire = $('#commentaire')[0];
 

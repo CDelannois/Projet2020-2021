@@ -18,7 +18,7 @@ module.exports = (app, queryPromise) => {
     app.get("/jeux/:id", async (req, res) => {
         const id = req.params.id;
         try {
-            const jeux = await queryPromise("SELECT * FROM jeux JOIN jeu on id_jeu = appartient WHERE id_jeux=?", [id]);
+            const jeux = await queryPromise("SELECT * FROM jeux JOIN membre on id_membre = appartient WHERE id_jeux=?", [id]);
             if (jeux.length === 0) {
                 return res.status(404).json({
                     error: "Ce jeu n'existe pas!"
@@ -51,63 +51,124 @@ module.exports = (app, queryPromise) => {
         const mecanisme2 = jeu.mecanisme2;
         let validateMecanisme2;
         const dateParution = jeu.date_parution;
+        let today = new Date();
+        let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         let validateDateParution;
         const editeur = jeu.editeur;
         let validateEditeur;
         const commentaire = jeu.commentaire;
         let validateCommentaire;
         const appartient = jeu.appartient;
-        let validateAppartient; 
-        let today = new Date();
-        let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(); //Permet de récupérer la date du jour au format date.
-        
-        if (validator.isAlpha(nom, "fr-FR", { ignore: " -" }) && validator.isLength(nom, { min: 2, max: 45 })) {
-            validateNom = true;
+        let validateAppartient;
+
+        if (validator.isLength(titre, {
+            min: 1,
+            max: 45
+        })) {
+            validateTitre = true;
         } else {
-            console.log("Le nom ne doit comporter que des lettres, espaces ou traits d'union et doit faire entre 2 et 45 caractères.");
-            validateNom = false;
+            console.log("Le titre du jeu doit faire entre 1 et 45 caractères");
+            validateTitre = false;
         }
 
-        if (validator.isAlpha(prenom, "fr-FR", { ignore: " -" }) && validator.isLength(prenom, { min: 2, max: 45 })) {
-            validatePrenom = true;
+        if (validator.isInt(joueursMin, {
+            min: 1,
+            max: joueursMax
+        })) {
+            validateJoueursMin = true;
         } else {
-            console.log("Le prénom ne doit comporter que des lettres, espaces ou traits d'union et doit faire entre 2 et 45 caractères.");
-            validatePrenom = false;
+            console.log("Le nombre minimum de joueurs doit être au moins et 1 et ne peut pas être plus grand que le nombre maximum de joueurs.");
+            validateJoueursMin = false;
         }
 
-        if (validator.isInt(telephone) && validator.isLength(telephone, { min: 9, max: 45 })) {
-            validateTelephone = true;
+        if (validator.isInt(joueursMax, {
+            min: joueursMin
+        })) {
+            validateJoueursMax = true;
         } else {
-            console.log("Le numéro de téléphone ne doit comporter que des chiffres et doit faire entre 9 et 45 caractères.");
-            validateTelephone = false;
+            console.log("Le nom maximum de joueurs ne peut pas être inférieur au nombre minimum de joueurs.");
+            validateJoueursMax = false;
         }
 
-        if (validator.isEmail(email) && validator.isLength(email, { min: 2, max: 45 })) {
-            validateEmail = true;
+        if (validator.isInt(duree, {
+            min: 1
+        })) {
+            validateDuree = true;
         } else {
-            console.log("Le format de l'adresse mail est incorrect (exemple: adresse@email.be) et doit faire entre 6 et 45 caractères.");
-            validateEmail = false;
+            console.log("La durée doit être au minimum à 1.");
+            validateDuree = false;
         }
 
-        if (validator.isAlpha(adresse, "fr-FR", { ignore: " 123456789-+" }) && validator.isLength(adresse, { min: 10, max: 45 })) {
-            validateAdresse = true;
+        if (validator.isInt(ageRecommande, {
+            min: 3
+        })) {
+            validateAgeRecommande = true;
         } else {
-            console.log("L'adresse ne peut comporter de caractères spéciaux et doit faire entre 10 et 45 caractères.");
-            validateAdresse = false;
+            console.log("L'âge recommandé doit être d'au moins 3.");
+            validateAgeRecommande = false;
         }
 
-        if (validator.isDate(date_naissance) && validator.isBefore(date_naissance, date)) {
-            validateDateNaissance = true;
+        if (validator.isLength(mecanisme, {
+            min: 5,
+            max: 45
+        })) {
+            validateMecanisme = true;
         } else {
-            console.log("Le date doit être au format YYYY/MM/DD et avant la date d'aujourd'hui.");
-            validateDateNaissance = false;
+            console.log("Le champ 'mecanisme' doit faire entre 5 et 45 caractères.");
+            validateMecanisme = false;
         }
-        if (validateNom == true &&
-            validatePrenom == true &&
-            validateTelephone == true &&
-            validateEmail == true &&
-            validateAdresse == true &&
-            validateDateNaissance == true) {
+
+        if (validator.isLength(mecanisme2, {
+            max: 45
+        })) {
+            validateMecanisme2 = true;
+        } else {
+            console.log("Le champ 'mecanisme2' doit faire au maximum 45 caractères");
+            validateMecanisme2 = false;
+        }
+
+        if (validator.isDate(dateParution) && validator.isBefore(dateParution, date)) {
+            validateDateParution = true;
+        } else {
+            console.log("La date de parution ne peut dépasser la date actuelle");
+            validateDateParution = false;
+        }
+
+        if (validator.isLength(editeur, {
+            min: 1,
+            max: 45
+        })) {
+            validateEditeur = true;
+        } else {
+            console.log("Le champ 'editeur' doit faire entre 1 et 45 caractères.");
+            validateEditeur = false;
+        }
+
+        if (validator.isLength(commentaire, { max: 200 })) {
+            validateCommentaire = true;
+        } else {
+            console.log("Le commentaire ne pet faire plus de 200 caractères");
+            validateCommentaire = false;
+        }
+
+        if (validator.isInt(appartient, { min: 1 })) {
+            validateAppartient = true;
+        } else {
+            console.log("Le champ 'appartient' doit être un nombre plus grand que 0");
+            validateAppartient = false;
+        }
+
+        if (validateTitre == true &&
+            validateJoueursMin == true &&
+            validateJoueursMax == true &&
+            validateDuree == true &&
+            validateAgeRecommande == true &&
+            validateMecanisme == true &&
+            validateMecanisme2 == true &&
+            validateDateParution == true &&
+            validateEditeur == true &&
+            validateCommentaire == true &&
+            validateAppartient == true) {
             return true;
         }
     }
@@ -202,8 +263,16 @@ module.exports = (app, queryPromise) => {
             jeu.commentaire = commentaire;
             jeu.appartient = appartient;
 
-            const add = await queryPromise("UPDATE jeux SET titre = ?, joueurs_min = ?, joueurs_max = ?, duree = ?, age_recommande = ?, mecanisme = ?, mecanisme2 = ?, date_parution = ?, editeur = ?, commentaire = ?, appartient = ? WHERE id_jeux = ?", [jeu.titre, jeu.joueurs_min, jeu.joueurs_max, jeu.duree, jeu.age_recommande, jeu.mecanisme, jeu.mecanisme2, jeu.date_parution, jeu.editeur, jeu.commentaire, jeu.appartient, jeu.id_jeux]);
-            res.json(jeu);
+            if (jeux.validation(req) == true) {
+                const add = await queryPromise("UPDATE jeux SET titre = ?, joueurs_min = ?, joueurs_max = ?, duree = ?, age_recommande = ?, mecanisme = ?, mecanisme2 = ?, date_parution = ?, editeur = ?, commentaire = ?, appartient = ? WHERE id_jeux = ?", [jeu.titre, jeu.joueurs_min, jeu.joueurs_max, jeu.duree, jeu.age_recommande, jeu.mecanisme, jeu.mecanisme2, jeu.date_parution, jeu.editeur, jeu.commentaire, jeu.appartient, jeu.id_jeux]);
+                res.json(jeu);
+            } else {
+                return res
+                    .status(400)
+                    .json({
+                        error: "Un ou plusieur champs sont erronés. Veuillez vous référer à la console."
+                    })
+            }
         } catch (e) {
             return res.status(400).json({
                 error: "Une erreur est survenue! " + e

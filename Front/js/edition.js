@@ -51,19 +51,14 @@ edition.cleanFormMembre = () => {
     jQuery('#adresse').val('');
     jQuery('#date_naissance').val('');
     $('#erreur-alpha-nom')[0].textContent = "";
-    $('#erreur-empty-nom')[0].textContent = "";
     $('#erreur-length-nom')[0].textContent = "";
     $('#erreur-alpha-prenom')[0].textContent = "";
-    $('#erreur-empty-prenom')[0].textContent = "";
     $('#erreur-length-prenom')[0].textContent = "";
     $('#erreur-int-telephone')[0].textContent = "";
-    $('#erreur-empty-telephone')[0].textContent = "";
     $('#erreur-length-telephone')[0].textContent = "";
     $('#erreur-is-email')[0].textContent = "";
-    $('#erreur-empty-email')[0].textContent = "";
     $('#erreur-length-email')[0].textContent = "";
     $('#erreur-alpha-adresse')[0].textContent = "";
-    $('#erreur-empty-adresse')[0].textContent = "";
     $('#erreur-length-adresse')[0].textContent = "";
     $('#erreur-date-naissance')[0].textContent = "";
 }
@@ -187,7 +182,7 @@ edition.populateJeu = (jeuID) => {
 edition.hideFormJeu = () => {
     jQuery('#container-form-jeu').fadeOut();
     jQuery('#button-cancel-edit-jeu').hide();
-    jQuery("#button-display-jeux").show();
+    jQuery("#button-display-jeux").hide();
     jQuery("#button-display-membre").show();
     jQuery('#button-add-jeu').show();
     edition.cleanFormJeu();
