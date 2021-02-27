@@ -213,7 +213,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Suppression d'un membre</h5>
         </div>
-        <div class="modal-body" id="impossible">
+        <div class="modal-body">
           Voulez-vous vraiment supprimer ce membre?
         </div>
         <div class="modal-footer">
@@ -224,6 +224,23 @@
     </div>
   </div>
 
+  <!--Modal d'erreur de suppression d'un membre-->
+  <div class="modal fade" id="remove-error-modal" tabindex="-1" aria-labelledby="remove-error-modal"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Suppression impossible</h5>
+        </div>
+        <div class="modal-body">
+          Impossible de supprimer ce membre, il possède encore des jeux.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--Affichage des jeux-->
   <div class="row" id="jeux-table">
     <div class="col-12">

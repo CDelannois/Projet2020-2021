@@ -18,10 +18,15 @@ body {
     color: azure;
 }
 
-#jeu-detail-table{
+#jeu-detail-table {
     text-align: center;
 }
 
-#details-list td{
+#details-list td {
     border-style: hidden;
+}
+
+#title-list-membre-jeux {
+    padding-left: 3%;
+    color: azure;
 }

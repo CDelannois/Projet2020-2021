@@ -4,7 +4,9 @@ const verification = {}
 
 /*Le bouton "Envoyer est désactivé. Il ne sera activé que quand toutes les variables des lignes 8 à 13 seront TRUE. Chacune de ces variable reçoit la valeur TRUE si
 les différentes conditions du champ correspondant sont remplies.*/
+
 $('#saveMembre').prop("disabled", true);
+
 let nomOk = false;
 let prenomOk = false;
 let telephoneOk = false;
@@ -207,12 +209,14 @@ $('#date_naissance').change(verification.verificationDateNaissance);
 
 //Déblocage du bouton
 verification.unlockButtonMembre = (e) => {
-    if (nomOk === true &&
+
+    if ((nomOk === true &&
         prenomOk === true &&
         telephoneOk === true &&
         emailOk === true &&
         adresseOk === true &&
-        dateNaissanceOk === true) {
+        dateNaissanceOk === true) ||
+        $('#id_membre')[0].value > 0) {
         $('#saveMembre').prop("disabled", false);
     } else {
         $('#saveMembre').prop("disabled", true);
@@ -227,10 +231,9 @@ $('#date_naissance').change(verification.unlockButtonMembre);
 
 //_________________________________________________________________________________JEUX______________________________________________________________________________________________
 
-$('#saveJeu').prop("disabled", true);
 let titreOk = false;
-let joueursMaxOk = false;
 let joueursMinOk = false;
+let joueursMaxOk = false;
 let dureeOk = false;
 let ageRecommandeOk = false;
 let mecanismeOk = false;
@@ -238,6 +241,8 @@ let mecanisme2Ok = true;//facultatif, peut être vide, set sur false si une erre
 let dateParutionOk = false;
 let editeurOk = false;
 let commentaireOk = true;//facultatif, peut être vide, set sur false si une erreur est entrée
+
+$('#saveJeu').prop("disabled", true);
 
 verification.verificationTitre = (e) => {
 
@@ -279,7 +284,7 @@ verification.verificationJoueursMin = (e) => {
         intMin = true;
     }
 
-    if (!validator.isInt(joueursMin, { min: 1, max: $('#joueurs_max')[0].value })) {
+    if (!validator.isInt(joueursMin, { min: 1, max: parseInt($('#joueurs_max')[0].value) })) {
         erreurValueMin.textContent = "La valeur doit être comprise entre 1 et le nombre maximum de joueurs.";
         valueMin = false;
     } else {
@@ -312,7 +317,7 @@ verification.verificationJoueursMax = (e) => {
         intMax = true;
     }
 
-    if (!validator.isInt(joueursMax, { min: $('#joueurs_min')[0].value, max: 1000 })) {
+    if (!validator.isInt(joueursMax, { min: parseInt($('#joueurs_min')[0].value), max: 1000 })) {
         erreurValueMax.textContent = "La valeur doit être supérieur à celle du nombre minimum de joueurs.";
         valueMax = false;
     } else {
@@ -517,7 +522,7 @@ verification.verificationCommentaire = (e) => {
 $('#commentaire').keyup(verification.verificationCommentaire);
 
 verification.unlockButtonJeu = (e) => {
-    if (titreOk === true &&
+    if ((titreOk === true &&
         joueursMinOk === true &&
         joueursMaxOk === true &&
         dureeOk === true &&
@@ -526,7 +531,8 @@ verification.unlockButtonJeu = (e) => {
         mecanisme2Ok === true &&
         dateParutionOk === true &&
         editeurOk === true &&
-        commentaireOk === true) {
+        commentaireOk === true) ||
+        $('#id_jeux')[0].value > 0) {
         $('#saveJeu').prop("disabled", false);
     } else {
         $('#saveJeu').prop("disabled", true);

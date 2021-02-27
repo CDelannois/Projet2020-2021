@@ -22,38 +22,39 @@ listMembre.getMembre = () => {
         })
 };
 
-//Confirmation de la suppression POUR VALIDER RECUPERER LA LONGUEUR DE LA LISTE DE JEUX D'UN MEMBRE
+//Confirmation de la suppression
 listMembre.confirmRemoveMembre = async (membreId) => {
-    /*let count = await listMembre.countMembre(membreId);;
-    console.log(count);
-    if (count > 0) {
-        console.log('On ne peut pas supprimer ce membre!');
-    };*/
     listMembre.membreToRemove = membreId;
-    jQuery('#remove-membre-modal').modal('toggle');
+    $('#remove-membre-modal').modal('toggle');
 }
 
 //Suppression d'un membre
 listMembre.remove = async () => {
     const membreId = listMembre.membreToRemove;
+    listMembre.hasGames = await listMembreJeux.getMembreJeux(membreId);
     try {
-        await jQuery
-            .ajax({
-                url: `http://localhost:3000/membre/${membreId}`,
-                method: "DELETE",
-            });
-        jQuery(`[data-id="${membreId}"]`).fadeOut('slow');
+        if ((listMembre.hasGames).length > 0) {
+            $("#remove-membre-modal").modal('hide');
+            $('#remove-error-modal').modal('toggle');
+        } else {
+            await jQuery
+                .ajax({
+                    url: `http://localhost:3000/membre/${membreId}`,
+                    method: "DELETE",
+                });
+            $(`[data-id="${membreId}"]`).fadeOut('slow');
+        }
     } catch (error) {
         console.error(error);
         alert('Une erreur est survenue. Impossible de supprimer le membre.');
     } finally {
-        jQuery("#remove-membre-modal").modal('hide');
+        $("#remove-membre-modal").modal('hide');
     }
 }
 
 //Liste des membres
 listMembre.importMembreInTable = (membres, clear) => {
-    const tbody = jQuery("#list-membres tbody");
+    const tbody = $("#list-membres tbody");
 
     if (clear === true) {
         tbody.empty();
@@ -63,7 +64,7 @@ listMembre.importMembreInTable = (membres, clear) => {
         membres.map((membre) => {
             const date = moment(membre.date_naissance).format("DD/MM/YYYY");
             return `
-            <tr data-id="${membre.id_membre}" >
+            <tr data-id="${membre.id_membre}">
                 <td>${membre.nom}</td>
                 <td>${membre.prenom}</td>
                 <td>${membre.telephone}</td>
@@ -74,7 +75,7 @@ listMembre.importMembreInTable = (membres, clear) => {
                     <button onclick="listMembreJeux.showJeux(${membre.id_membre})" class ="btn btn-info">Voir les jeux
                 </td>
                 <td>
-                    <button onclick="edition.showFormMembre(${membre.id_membre})" class ="btn btn-primary">Modifier
+                    <button id="edit_membre" onclick="edition.showFormMembre(${membre.id_membre})" class ="btn btn-primary">Modifier
                 </td>
                 <td>
                     <button onclick="listMembre.confirmRemoveMembre(${membre.id_membre})" class ="btn btn-danger remove-line">Supprimer
@@ -126,7 +127,7 @@ listJeux.getJeux = (jeuID) => {
 //Confirmation de la suppression
 listJeux.confirmRemoveJeu = (jeuId) => {
     listJeux.jeuxToRemove = jeuId;
-    jQuery('#remove-jeu-modal').modal('toggle');
+    $('#remove-jeu-modal').modal('toggle');
 }
 
 //Suppression d'un jeu
@@ -138,19 +139,19 @@ listJeux.remove = async () => {
                 url: `http://localhost:3000/jeux/${jeuId}`,
                 method: "DELETE",
             });
-        jQuery(`[data-id="${jeuId}"]`).fadeOut('slow');
+        $(`[data-id="${jeuId}"]`).fadeOut('slow');
     } catch (error) {
         console.error(error);
         alert('Une erreur est survenue. Impossible de supprimer le jeu.');
     } finally {
-        jQuery("#remove-jeu-modal").modal('hide');
+        $("#remove-jeu-modal").modal('hide');
     }
 }
 
 //Liste des jeux
 listJeux.importJeuxInTable = (jeux, clear) => {
 
-    const tbody = jQuery("#list-jeux tbody");
+    const tbody = $("#list-jeux tbody");
 
     if (clear === true) {
         tbody.empty();
@@ -182,13 +183,13 @@ listJeux.importJeuxInTable = (jeux, clear) => {
 
 listJeux.importOneJeuInTable = (jeu, clear) => {
 
-    const tbody = jQuery("#details-list tbody")
+    const tbody = $("#details-list tbody")
 
     if (clear === true) {
         tbody.empty();
     }
 
-    jeu.forEach((detail) => {//Arranger l'affichage ==> pour le moment c'est laid.
+    jeu.forEach((detail) => {
         const date = moment(detail.date_parution).format("MMMM YYYY");
         tbody.append(`
             
@@ -234,9 +235,12 @@ listMembreJeux.getMembreJeux = (membreId) => {
 };
 
 //Liste des jeux
-listMembreJeux.importMembreJeuxInTable = (membreJeux, clear) => {
-    const tbody = jQuery("#list-membre-jeux tbody");
 
+listMembreJeux.importMembreJeuxInTable = (membreJeux, clear) => {
+    const tbody = $("#list-membre-jeux tbody");
+    nom = membreJeux[0].nom;
+    prenom = membreJeux[0].prenom;
+    $('#title-list-membre-jeux')[0].textContent = ('Jeux de ' + prenom + ' ' + nom);
     if (clear === true) {
         tbody.empty();
     }
@@ -277,5 +281,3 @@ listMembreJeux.showJeux = (membreId) => {
     listMembreJeux.init(membreId);
     display.showMembreJeux();
 };
-
-listMembreJeux.init();

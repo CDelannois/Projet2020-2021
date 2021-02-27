@@ -73,7 +73,7 @@ module.exports = (app, queryPromise) => {
 
         if (validator.isInt(joueursMin, {
             min: 1,
-            max: joueursMax
+            max: parseInt(joueursMax)
         })) {
             validateJoueursMin = true;
         } else {
@@ -82,7 +82,7 @@ module.exports = (app, queryPromise) => {
         }
 
         if (validator.isInt(joueursMax, {
-            min: joueursMin
+            min: parseInt(joueursMin)
         })) {
             validateJoueursMax = true;
         } else {

@@ -2,47 +2,47 @@ const display = {};
 
 //Afficher les jeux
 display.showJeux = () => {
-    jQuery('#jeux-table').show();
-    jQuery('#membre-table').hide();
-    jQuery('#membre-jeux-table').hide();
-    jQuery('#jeu-detail-table').hide();
-    jQuery('#button-add-jeu').show();
-    jQuery("#button-display-jeux").hide();
-    jQuery("#button-display-membre").show();
-    jQuery('#button-add-membre').hide();
+    $('#jeux-table').show();
+    $('#membre-table').hide();
+    $('#membre-jeux-table').hide();
+    $('#jeu-detail-table').hide();
+    $('#button-add-jeu').show();
+    $("#button-display-jeux").hide();
+    $("#button-display-membre").show();
+    $('#button-add-membre').hide();
 };
 
 //Afficher les membres
 display.showMembre = () => {
-    jQuery('#jeux-table').hide();
-    jQuery('#membre-table').show();
-    jQuery('#membre-jeux-table').hide();
-    jQuery('#jeu-detail-table').hide();
-    jQuery('#button-add-jeu').hide();
-    jQuery("#button-display-jeux").show();
-    jQuery("#button-display-membre").hide();
-    jQuery('#button-add-membre').show();
+    $('#jeux-table').hide();
+    $('#membre-table').show();
+    $('#membre-jeux-table').hide();
+    $('#jeu-detail-table').hide();
+    $('#button-add-jeu').hide();
+    $("#button-display-jeux").show();
+    $("#button-display-membre").hide();
+    $('#button-add-membre').show();
 };
 
 //Afficher les jeux d'un membre
 display.showMembreJeux = () => {
-    jQuery('#jeux-table').hide();
-    jQuery('#membre-table').hide();
-    jQuery('#membre-jeux-table').show();
-    jQuery('#jeu-detail-table').hide();
-    jQuery('#button-add-membre').hide();
-    jQuery('#button-add-jeu').show();
-    jQuery("#button-display-jeux").show();
-    jQuery("#button-display-membre").show();
+    $('#jeux-table').hide();
+    $('#membre-table').hide();
+    $('#membre-jeux-table').show();
+    $('#jeu-detail-table').hide();
+    $('#button-add-membre').hide();
+    $('#button-add-jeu').show();
+    $("#button-display-jeux").show();
+    $("#button-display-membre").show();
 }
 
 //Afficher les détails d'un jeu
 display.detailJeu = () => {
-    jQuery('#jeu-detail-table').show();
-    jQuery('#jeux-table').hide();
-    jQuery('#membre-jeux-table').hide();
-    jQuery('#button-add-jeu').hide();
-    jQuery("#button-display-jeux").show();
-    jQuery("#button-display-membre").show();
-    jQuery('#button-add-membre').hide();
+    $('#jeu-detail-table').show();
+    $('#jeux-table').hide();
+    $('#membre-jeux-table').hide();
+    $('#button-add-jeu').hide();
+    $("#button-display-jeux").show();
+    $("#button-display-membre").show();
+    $('#button-add-membre').hide();
 }

@@ -8,11 +8,11 @@ edition.showFormMembre = (membreID) => {
     if (membreID) {
         edition.populateMembre(membreID);
     }
-    jQuery('#container-form-membre').fadeIn();
-    jQuery('#button-add-membre').hide();
-    jQuery("#button-display-jeux").hide();
-    jQuery('#button-cancel-edit-membre').show();
-    jQuery('#membre-table').hide();
+    $('#container-form-membre').fadeIn();
+    $('#button-add-membre').hide();
+    $("#button-display-jeux").hide();
+    $('#button-cancel-edit-membre').show();
+    $('#membre-table').hide();
 };
 
 edition.populateMembre = (membreID) => {
@@ -21,35 +21,47 @@ edition.populateMembre = (membreID) => {
     const membre = listMembre.membre.find(membre => membre.id_membre === membreID);
     //Si le membre existe
     if (membre) {
-        const date = moment(membre.date_naissance).add(1, 'd');
-        jQuery('#id_membre').val(membre.id_membre);
-        jQuery('#nom').val(membre.nom);
-        jQuery('#prenom').val(membre.prenom);
-        jQuery('#telephone').val(membre.telephone);
-        jQuery('#email').val(membre.email);
-        jQuery('#adresse').val(membre.adresse);
-        jQuery('#date_naissance').val(date);
+        let myDate, day, month, year, date; //Récupération et formatage de la date pour l'envoyer dans le formulaire.
+        myDate = new Date(membre.date_naissance);
+        day = myDate.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        month = myDate.getMonth() + 1;
+        if (month < 10) {
+            month = "0" + month;
+        }
+        year = myDate.getFullYear();
+        date = year + "-" + month + "-" + day;
+        $('#id_membre').val(membre.id_membre);
+        $('#nom').val(membre.nom);
+        $('#prenom').val(membre.prenom);
+        $('#telephone').val(membre.telephone);
+        $('#email').val(membre.email);
+        $('#adresse').val(membre.adresse);
+        $('#date_naissance').val(date);
     }
 }
 
 //Effacer le formulaire pour ajouter un membre
 edition.hideFormMembre = () => {
-    jQuery('#container-form-membre').fadeOut();
-    jQuery('#button-add-membre').show();
-    jQuery("#button-display-jeux").show();
-    jQuery('#button-cancel-edit-membre').hide();
+    $('#container-form-membre').fadeOut();
+    $('#button-add-membre').show();
+    $("#button-display-jeux").show();
+    $('#button-cancel-edit-membre').hide();
     edition.cleanFormMembre();
-    jQuery('#membre-table').fadeIn();
+    $('#saveMembre').prop("disabled", true);
+    $('#membre-table').fadeIn();
 };
 
 edition.cleanFormMembre = () => {
-    jQuery('#id_membre').val('');
-    jQuery('#nom').val('');
-    jQuery('#prenom').val('');
-    jQuery('#telephone').val('');
-    jQuery('#email').val('');
-    jQuery('#adresse').val('');
-    jQuery('#date_naissance').val('');
+    $('#id_membre').val('');
+    $('#nom').val('');
+    $('#prenom').val('');
+    $('#telephone').val('');
+    $('#email').val('');
+    $('#adresse').val('');
+    $('#date_naissance').val('');
     $('#erreur-alpha-nom')[0].textContent = "";
     $('#erreur-length-nom')[0].textContent = "";
     $('#erreur-alpha-prenom')[0].textContent = "";
@@ -66,14 +78,14 @@ edition.cleanFormMembre = () => {
 //Valider l'enregistrement d'un membre
 edition.saveMembre = async (event) => {
     event.preventDefault(); //Arrêter l'exécution de l'envoi
-    const id = jQuery('#id_membre').val();
+    const id = $('#id_membre').val();
     const isEdition = id.length > 0;
-    const nom = jQuery('#nom').val();
-    const prenom = jQuery('#prenom').val();
-    const telephone = jQuery('#telephone').val();
-    const email = jQuery('#email').val(); //Il faudra ajouter une vérification pour que l'adresse respecte le format *@*.* voir https://www.w3resource.com/javascript/form/email-validation.php
-    const adresse = jQuery('#adresse').val();
-    const date_naissance = jQuery('#date_naissance').val();
+    const nom = $('#nom').val();
+    const prenom = $('#prenom').val();
+    const telephone = $('#telephone').val();
+    const email = $('#email').val(); //Il faudra ajouter une vérification pour que l'adresse respecte le format *@*.* voir https://www.w3resource.com/javascript/form/email-validation.php
+    const adresse = $('#adresse').val();
+    const date_naissance = $('#date_naissance').val();
 
     let url = 'http://localhost:3000/membre';
 
@@ -133,21 +145,21 @@ edition.showFormJeu = (jeuID) => {
     //si on a un ID, on appelle populate
     if (jeuID) {
         edition.populateJeu(jeuID);
-        jQuery('#membre-jeux-table').hide();
+        $('#membre-jeux-table').hide();
     }
-    jQuery('#container-form-jeu').fadeIn();
-    jQuery('#button-add-jeu').hide();
-    jQuery('#button-add-membre').hide();
-    jQuery("#button-display-jeux").hide();
-    jQuery("#button-display-membre").hide();
-    jQuery('#button-cancel-edit-jeu').show();
-    jQuery('#jeux-table').hide();
-    jQuery("#error-modal").modal('hide');
+    $('#container-form-jeu').fadeIn();
+    $('#button-add-jeu').hide();
+    $('#button-add-membre').hide();
+    $("#button-display-jeux").hide();
+    $("#button-display-membre").hide();
+    $('#button-cancel-edit-jeu').show();
+    $('#jeux-table').hide();
+    $("#error-modal").modal('hide');
 
 };
 
 edition.fillSelectMembres = (membres) => {
-    const select = jQuery('#jeuAppartient');
+    const select = $('#jeuAppartient');
     select.append(
         membres.map(membre => {
             return `<option value="${membre.id_membre}">${membre.prenom} ${membre.nom}</option>`
@@ -162,65 +174,91 @@ edition.populateJeu = (jeuID) => {
     const jeu = listJeux.jeu.find(jeu => jeu.id_jeux === jeuID);
     //Si le jeu existe
     if (jeu) {
-        const date = jeu.date_parution.slice(0, 10);
-        jQuery('#id_jeux').val(jeu.id_jeux);
-        jQuery('#titre').val(jeu.titre);
-        jQuery('#joueurs_min').val(jeu.joueurs_min);
-        jQuery('#joueurs_max').val(jeu.joueurs_max);
-        jQuery('#duree').val(jeu.duree);
-        jQuery('#age_recommande').val(jeu.age_recommande);
-        jQuery('#mecanisme').val(jeu.mecanisme);
-        jQuery('#mecanisme2').val(jeu.mecanisme2);
-        jQuery('#date_parution').val(date);
-        jQuery('#editeur').val(jeu.editeur);
-        jQuery('#commentaire').val(jeu.commentaire);
-        jQuery('#jeuAppartient').val(jeu.appartient);
+        let myDate, day, month, year, date; //Récupération et formatage de la date pour l'envoyer dans le formulaire.
+        myDate = new Date(jeu.date_parution);
+        day = myDate.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        month = myDate.getMonth() + 1;
+        if (month < 10) {
+            month = "0" + month;
+        }
+        year = myDate.getFullYear();
+        date = year + "-" + month + "-" + day;
+        
+        $('#id_jeux').val(jeu.id_jeux);
+        $('#titre').val(jeu.titre);
+        $('#joueurs_min').val(jeu.joueurs_min);
+        $('#joueurs_max').val(jeu.joueurs_max);
+        $('#duree').val(jeu.duree);
+        $('#age_recommande').val(jeu.age_recommande);
+        $('#mecanisme').val(jeu.mecanisme);
+        $('#mecanisme2').val(jeu.mecanisme2);
+        $('#date_parution').val(date);
+        $('#editeur').val(jeu.editeur);
+        $('#commentaire').val(jeu.commentaire);
+        $('#jeuAppartient').val(jeu.appartient);
     }
 }
 
 //Effacer le formulaire pour ajouter un jeu
 edition.hideFormJeu = () => {
-    jQuery('#container-form-jeu').fadeOut();
-    jQuery('#button-cancel-edit-jeu').hide();
-    jQuery("#button-display-jeux").hide();
-    jQuery("#button-display-membre").show();
-    jQuery('#button-add-jeu').show();
+    $('#container-form-jeu').fadeOut();
+    $('#button-cancel-edit-jeu').hide();
+    $("#button-display-jeux").hide();
+    $("#button-display-membre").show();
+    $('#button-add-jeu').show();
     edition.cleanFormJeu();
-    jQuery('#membre-table').hide();
-    jQuery('#jeux-table').show();
+    $('#membre-table').hide();
+    $('#jeux-table').show();
+    $('#saveJeu').prop("disabled", true);
 };
 
 edition.cleanFormJeu = () => {
-    jQuery('#id_jeux').val('');
-    jQuery('#titre').val('');
-    jQuery('#joueurs_min').val('');
-    jQuery('#joueurs_max').val('');
-    jQuery('#duree').val('');
-    jQuery('#age_recommande').val('');
-    jQuery('#mecanisme').val('');
-    jQuery('#mecanisme2').val('');
-    jQuery('#date_parution').val('');
-    jQuery('#editeur').val('');
-    jQuery('#commentaire').val('');
-    jQuery('#jeuAppartient').val();
-
+    $('#id_jeux').val('');
+    $('#titre').val('');
+    $('#joueurs_min').val('');
+    $('#joueurs_max').val('');
+    $('#duree').val('');
+    $('#age_recommande').val('');
+    $('#mecanisme').val('');
+    $('#mecanisme2').val('');
+    $('#date_parution').val('');
+    $('#editeur').val('');
+    $('#commentaire').val('');
+    $('#jeuAppartient').val();
+    $('#erreur-length-titre')[0].textContent = "";
+    $('#erreur-int-min')[0].textContent = "";
+    $('#erreur-value-min')[0].textContent = "";
+    $('#erreur-int-max')[0].textContent = "";
+    $('#erreur-value-max')[0].textContent = "";
+    $('#erreur-int-duree')[0].textContent = "";
+    $('#erreur-int-age')[0].textContent = "";
+    $('#erreur-alpha-mecanisme')[0].textContent = "";
+    $('#erreur-length-mecanisme')[0].textContent = "";
+    $('#erreur-alpha-mecanisme2')[0].textContent = "";
+    $('#erreur-length-mecanisme2')[0].textContent = "";
+    $('#erreur-date-parution')[0].textContent = "";
+    $('#erreur-length-editeur')[0].textContent = "";
+    $('#erreur-length-commentaire')[0].textContent = "";
 }
 
 edition.saveJeu = async () => {
 
-    const id = jQuery('#id_jeux').val();
+    const id = $('#id_jeux').val();
     const isEdition = id.length > 0;
-    const titre = jQuery('#titre').val();
-    const joueurs_min = jQuery('#joueurs_min').val();
-    const joueurs_max = jQuery('#joueurs_max').val();
-    const duree = jQuery('#duree').val();
-    const age_recommande = jQuery('#age_recommande').val();
-    const mecanisme = jQuery('#mecanisme').val();
-    const mecanisme2 = jQuery('#mecanisme2').val();
-    const date_parution = jQuery('#date_parution').val();
-    const editeur = jQuery('#editeur').val();
-    const commentaire = jQuery('#commentaire').val();
-    const appartient = jQuery('#jeuAppartient').val();
+    const titre = $('#titre').val();
+    const joueurs_min = $('#joueurs_min').val();
+    const joueurs_max = $('#joueurs_max').val();
+    const duree = $('#duree').val();
+    const age_recommande = $('#age_recommande').val();
+    const mecanisme = $('#mecanisme').val();
+    const mecanisme2 = $('#mecanisme2').val();
+    const date_parution = $('#date_parution').val();
+    const editeur = $('#editeur').val();
+    const commentaire = $('#commentaire').val();
+    const appartient = $('#jeuAppartient').val();
 
     event.preventDefault(); //Arrêter l'exécution de l'envoi
 
