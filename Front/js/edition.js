@@ -106,11 +106,8 @@ edition.saveMembre = async (event) => {
                 date_naissance,
             }
         });
-        if (isEdition) {
-            listMembre.init();
-        } else {
-            listMembre.importMembreInTable([newMembre]);
-        }
+        listMembre.init();
+
 
         edition.hideFormMembre();
     } catch (error) {
@@ -186,7 +183,7 @@ edition.populateJeu = (jeuID) => {
         }
         year = myDate.getFullYear();
         date = year + "-" + month + "-" + day;
-        
+
         $('#id_jeux').val(jeu.id_jeux);
         $('#titre').val(jeu.titre);
         $('#joueurs_min').val(jeu.joueurs_min);
@@ -292,7 +289,7 @@ edition.saveJeu = async () => {
             listJeux.init();
             listMembreJeux.init(appartient);
         } else {
-            listJeux.importJeuxInTable([newJeu]);
+            listJeux.init();
         }
         edition.hideFormJeu();
     } catch (error) {
