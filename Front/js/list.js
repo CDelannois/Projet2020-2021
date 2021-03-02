@@ -98,8 +98,8 @@ listJeux.init = async () => {
 
 //Affichage d'un jeu
 listJeux.jeuDetail = async (jeuID) => {
-    listJeux.jeu = await listJeux.getJeux(jeuID);
-    listJeux.importOneJeuInTable(listJeux.jeu, true);
+    listJeux.oneJeu = await listJeux.getJeux(jeuID);
+    listJeux.importOneJeuInTable(listJeux.oneJeu, true);
     display.detailJeu();
 }
 
@@ -188,7 +188,7 @@ listJeux.importOneJeuInTable = (jeu, clear) => {
     if (clear === true) {
         tbody.empty();
     }
-
+    console.log(jeu);
     jeu.forEach((detail) => {
         const date = moment(detail.date_parution).format("MMMM YYYY");
         tbody.append(`
