@@ -188,7 +188,6 @@ listJeux.importOneJeuInTable = (jeu, clear) => {
     if (clear === true) {
         tbody.empty();
     }
-    console.log(jeu);
     jeu.forEach((detail) => {
         const date = moment(detail.date_parution).format("MMMM YYYY");
         tbody.append(`
